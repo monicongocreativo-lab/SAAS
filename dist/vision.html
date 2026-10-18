@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#10283d" />
+  <meta name="description" content="Prototipo UX del centro de control multiempresa para La Paulina, Tamago y Transagro." />
+  <title>Visión multiempresa · Centro de Control</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div><strong>Centro de Control</strong><small>Grupo empresarial</small></div>
+      </div>
+
+      <nav class="primary-nav">
+        <a href="./index.html" style="color:#dcf6f1;padding:12px;text-decoration:none;font-size:13px">← Volver a la prueba de campo</a>
+        <button class="nav-item active" data-view="resumen"><span class="nav-icon">⌂</span><span>Resumen</span></button>
+        <button class="nav-item" data-view="operacion"><span class="nav-icon">◎</span><span>Operación</span></button>
+        <button class="nav-item" data-view="alimento"><span class="nav-icon">↗</span><span>Ensayo alimento</span></button>
+        <button class="nav-item" data-view="interempresas"><span class="nav-icon">⇄</span><span>Interempresas</span><em>1</em></button>
+        <button class="nav-item" data-view="registro"><span class="nav-icon">＋</span><span>Registro diario</span></button>
+        <button class="nav-item" data-view="estrategia"><span class="nav-icon">◇</span><span>Plan por etapas</span></button>
+        <button class="nav-item" data-view="handoff"><span class="nav-icon">⌘</span><span>Handoff UX–Dev</span></button>
+      </nav>
+
+      <div class="sidebar-context">
+        <p>Calidad del cierre</p>
+        <div class="sidebar-score"><strong>92%</strong><span>28 de 30 controles</span></div>
+        <div class="mini-progress"><span style="width:92%"></span></div>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">HO</div>
+        <div><strong>Heydi Ortiz</strong><small>Diseño + Finanzas</small></div>
+        <button aria-label="Abrir perfil">•••</button>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div class="mobile-brand">Centro de Control</div>
+        <div class="context-switchers">
+          <label>
+            <span>Empresa</span>
+            <select id="companySelect">
+              <option value="grupo">Grupo consolidado</option>
+              <option value="pau">La Paulina · PAU</option>
+              <option value="tam">Tamago · TAM</option>
+              <option value="tra">Transagro · TRA</option>
+            </select>
+          </label>
+          <label>
+            <span>Periodo</span>
+            <select id="periodSelect">
+              <option>Semana 36 · 2026</option>
+              <option>Agosto · 2026</option>
+              <option>Acumulado 2026</option>
+            </select>
+          </label>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Buscar">⌕</button>
+          <button class="icon-button notification" aria-label="Notificaciones">◌<span></span></button>
+          <button class="primary-button" data-open-capture>＋ Registrar hecho</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-resumen" aria-labelledby="title-resumen">
+        <div class="page-heading">
+          <div><p class="eyebrow">Panorama de decisión</p><h1 id="title-resumen">Resumen del grupo</h1><p>Datos de demostración · corte preliminar al 6 de septiembre de 2026</p></div>
+          <div class="heading-actions"><button class="secondary-button">Descargar informe</button><button class="icon-button" aria-label="Más acciones">•••</button></div>
+        </div>
+
+        <div class="status-strip" role="status">
+          <span class="status-dot warning"></span>
+          <strong>Cierre preliminar.</strong>
+          <span>Falta conciliar una operación PAU → TAM por $480.000.</span>
+          <button data-view-link="interempresas">Resolver diferencia →</button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card featured"><div class="metric-head"><span>Resultado operativo</span><small>Grupo</small></div><strong data-kpi="result">$38,4 M</strong><div class="delta positive">↑ 8,6% <span>vs. semana anterior</span></div><div class="sparkline" aria-hidden="true"><i style="height:33%"></i><i style="height:47%"></i><i style="height:42%"></i><i style="height:61%"></i><i style="height:55%"></i><i style="height:76%"></i><i style="height:88%"></i></div></article>
+          <article class="metric-card"><div class="metric-head"><span>Caja disponible</span><small>Conciliada</small></div><strong data-kpi="cash">$126,8 M</strong><div class="delta neutral">2,9 meses <span>de cobertura</span></div><div class="metric-note">Próximo pago relevante: alimento · jueves</div></article>
+          <article class="metric-card"><div class="metric-head"><span>Capital de trabajo</span><small>Operativo</small></div><strong data-kpi="working">$91,2 M</strong><div class="delta negative">↓ $6,1 M <span>por inventario</span></div><div class="metric-note">18,4% está concentrado en huevo</div></article>
+          <article class="metric-card quality-card"><div class="score-ring"><div><strong>92</strong><span>%</span></div></div><div><span>Confianza del panorama</span><strong>Alta con observaciones</strong><small>2 controles pendientes</small></div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel value-chain-panel">
+            <div class="panel-header"><div><p class="eyebrow">Cadena de valor</p><h2>De la pollita al recaudo</h2></div><div class="legend"><span><i class="dot teal"></i>Operativo</span><span><i class="dot amber"></i>Por conciliar</span></div></div>
+            <div class="value-chain">
+              <button class="company-node pau" data-view-link="operacion"><span>PAU</span><strong>8.620 aves</strong><small>Costo transferible $142,6 M</small><b>Levante</b></button>
+              <div class="connector"><span>1.240 aves</span><i></i></div>
+              <button class="company-node tam" data-view-link="operacion"><span>TAM</span><strong>53.480 huevos</strong><small>Postura 88,6%</small><b>Producción + venta</b></button>
+              <div class="connector"><span>14 viajes</span><i></i></div>
+              <button class="company-node tra" data-view-link="operacion"><span>TRA</span><strong>91% OTIF</strong><small>Costo medio $428/t-km</small><b>Logística</b></button>
+              <div class="connector external"><span>$25,8 M</span><i></i></div>
+              <div class="customer-node"><span>Clientes</span><strong>96,2%</strong><small>recaudo aplicado</small></div>
+            </div>
+            <div class="chain-footer"><span>Ingresos externos <strong>$74,6 M</strong></span><span>Operaciones internas <strong>$18,9 M</strong></span><span>Eliminaciones <strong>−$18,9 M</strong></span></div>
+          </article>
+
+          <article class="panel attention-panel">
+            <div class="panel-header"><div><p class="eyebrow">Hoy</p><h2>Requiere atención</h2></div><button class="text-button">Ver todo</button></div>
+            <div class="attention-list">
+              <button data-view-link="interempresas"><span class="alert-icon red">!</span><div><strong>Operación sin contrapartida</strong><small>PAU → TAM · diferencia $480.000</small></div><time>09:42</time></button>
+              <button data-view-link="operacion"><span class="alert-icon amber">↘</span><div><strong>Clasificación incompleta</strong><small>Faltan 312 huevos por conciliar</small></div><time>08:15</time></button>
+              <button data-view-link="alimento"><span class="alert-icon blue">≈</span><div><strong>Ensayo Solla en transición</strong><small>No publicar inferencia hasta día 10</small></div><time>Día 6</time></button>
+              <button><span class="alert-icon teal">✓</span><div><strong>Viaje TRA-036 cerrado</strong><small>Costo y entrega conciliados</small></div><time>07:30</time></button>
+            </div>
+          </article>
+
+          <article class="panel trend-panel">
+            <div class="panel-header"><div><p class="eyebrow">Conversión</p><h2>Alimento → masa vendible</h2></div><select aria-label="Seleccionar métrica"><option>FCR masa</option><option>Huevos por kg</option></select></div>
+            <div class="chart-wrap">
+              <div class="chart-y"><span>2,3</span><span>2,1</span><span>1,9</span><span>1,7</span></div>
+              <svg class="line-chart" viewBox="0 0 620 190" role="img" aria-label="Evolución semanal del FCR masa">
+                <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18a999" stop-opacity=".32"/><stop offset="1" stop-color="#18a999" stop-opacity="0"/></linearGradient></defs>
+                <path class="gridline" d="M0 25H620M0 75H620M0 125H620M0 175H620"/>
+                <path class="area" d="M0 42 C70 55 90 52 150 79 S245 86 300 112 S405 99 465 132 S560 138 620 151 L620 190 L0 190Z"/>
+                <path class="line" d="M0 42 C70 55 90 52 150 79 S245 86 300 112 S405 99 465 132 S560 138 620 151"/>
+                <g class="points"><circle cx="0" cy="42" r="4"/><circle cx="150" cy="79" r="4"/><circle cx="300" cy="112" r="4"/><circle cx="465" cy="132" r="4"/><circle cx="620" cy="151" r="5"/></g>
+              </svg>
+              <div class="chart-x"><span>S32</span><span>S33</span><span>S34</span><span>S35</span><span>S36</span></div>
+            </div>
+            <div class="chart-summary"><div><span>Actual</span><strong>1,82 kg/kg</strong></div><div><span>Meta</span><strong>≤ 1,88</strong></div><div><span>Cambio</span><strong class="good">−4,2%</strong></div></div>
+          </article>
+
+          <article class="panel mix-panel">
+            <div class="panel-header"><div><p class="eyebrow">Tamago</p><h2>Mezcla clasificada</h2></div><small>53.168 conciliados</small></div>
+            <div class="mix-content"><div class="donut" aria-label="Distribución de huevos por clasificación"></div><div class="mix-legend"><div><i style="background:#173f5f"></i><span>Jumbo</span><strong>22%</strong></div><div><i style="background:#18a999"></i><span>AAA</span><strong>31%</strong></div><div><i style="background:#f5a623"></i><span>AA</span><strong>28%</strong></div><div><i style="background:#df6c4f"></i><span>A y otros</span><strong>19%</strong></div></div></div>
+            <button class="panel-link" data-view-link="operacion">Abrir detalle de clasificación →</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-operacion" aria-labelledby="title-operacion">
+        <div class="page-heading"><div><p class="eyebrow">Operación diaria</p><h1 id="title-operacion">Pulso de las tres empresas</h1><p>Una lectura comparable sin mezclar responsabilidades ni facturación.</p></div><button class="primary-button" data-open-capture>＋ Nuevo registro</button></div>
+        <div class="company-tabs" role="tablist"><button class="active" data-company-tab="tam">Tamago</button><button data-company-tab="pau">La Paulina</button><button data-company-tab="tra">Transagro</button></div>
+        <div class="operation-layout">
+          <article class="panel operation-main">
+            <div class="operation-title"><div class="company-badge tam">TAM</div><div><h2>Producción y clasificación</h2><p>Lote T-2604 · 8.620 aves · semana de edad 41</p></div><span class="pill green">Turno abierto</span></div>
+            <div class="shift-timeline">
+              <div class="shift complete"><span>06:10</span><b>1ª recogida</b><strong>18.420</strong><small>Registró Mariana</small></div>
+              <div class="shift complete"><span>11:32</span><b>2ª recogida</b><strong>17.860</strong><small>Registró Luis</small></div>
+              <div class="shift current"><span>16:00</span><b>3ª recogida</b><strong>17.200</strong><small>Sincronizado 16:18</small></div>
+              <div class="shift pending"><span>18:00</span><b>Cierre</b><strong>—</strong><small>Faltan 2 controles</small></div>
+            </div>
+            <div class="production-balance">
+              <div><span>Recogido</span><strong>53.480</strong></div><b>−</b><div><span>Clasificado</span><strong>53.168</strong></div><b>=</b><div class="difference"><span>Diferencia</span><strong>312</strong><small>0,58%</small></div>
+            </div>
+            <div class="action-callout"><span>!</span><div><strong>El sistema no ajustará automáticamente.</strong><p>Asigna la diferencia a huevo pendiente, rotura, consumo interno u otra causa documentada.</p></div><button data-open-capture>Resolver</button></div>
+          </article>
+          <aside class="panel checklist-panel"><div class="panel-header"><div><p class="eyebrow">Cierre operativo</p><h2>Lista de control</h2></div><strong>4/6</strong></div><label><input type="checkbox" checked /> Tres recogidas registradas</label><label><input type="checkbox" checked /> Clasificación vinculada al lote</label><label><input type="checkbox" checked /> Muestra de peso validada</label><label><input type="checkbox" checked /> Inventario sin saldo negativo</label><label><input type="checkbox" /> Diferencia explicada</label><label><input type="checkbox" /> Supervisor aprueba cierre</label><button class="primary-button full" disabled>Cerrar jornada</button><small>El cierre se habilita al completar los controles.</small></aside>
+        </div>
+        <div class="compact-kpis"><article><span>Postura hen-day</span><strong>88,6%</strong><small class="good">+1,2 pp vs curva</small></article><article><span>Consumo ave/día</span><strong>116 g</strong><small>Dentro de banda</small></article><article><span>Mortalidad semana</span><strong>0,07%</strong><small>6 aves</small></article><article><span>Masa vendible</span><strong>3.266 kg</strong><small class="good">+3,8%</small></article></div>
+      </section>
+
+      <section class="view" id="view-alimento" aria-labelledby="title-alimento">
+        <div class="page-heading"><div><p class="eyebrow">Laboratorio de decisión</p><h1 id="title-alimento">Comparar fórmulas de alimento</h1><p>Compara valor producido y costo en periodos elegibles. Un resultado observado no demuestra causalidad.</p></div><span class="pill amber">Experimental</span></div>
+        <div class="experiment-banner"><div><span>Día 6 de 14</span><strong>Ensayo por bloques: Solla vs. Hacienda</strong><small>4 lotes comparables · 1 lote excluido por intervención sanitaria</small></div><div class="experiment-progress"><span style="width:43%"></span></div><button>Ver protocolo</button></div>
+        <div class="feed-layout">
+          <article class="panel feed-inputs">
+            <div class="panel-header"><div><p class="eyebrow">Entradas editables</p><h2>Supuestos del periodo</h2></div><button id="resetFeed" class="text-button">Restablecer</button></div>
+            <div class="input-table">
+              <div class="input-row header"><span>Variable</span><strong>Solla</strong><strong>Hacienda</strong></div>
+              <label class="input-row"><span>Alimento consumido <small>kg</small></span><input id="sollaKg" type="number" value="7000" min="0" /><input id="haciendaKg" type="number" value="7000" min="0" /></label>
+              <label class="input-row"><span>Costo por kg <small>COP</small></span><input id="sollaCost" type="number" value="2300" min="0" /><input id="haciendaCost" type="number" value="2050" min="0" /></label>
+              <label class="input-row"><span>Huevos producidos</span><input id="sollaEggs" type="number" value="55000" min="0" /><input id="haciendaEggs" type="number" value="52000" min="0" /></label>
+              <label class="input-row"><span>Mezcla premium <small>%</small></span><input id="sollaPremium" type="number" value="53" min="0" max="100" /><input id="haciendaPremium" type="number" value="38" min="0" max="100" /></label>
+              <label class="input-row"><span>Precio premium <small>COP/huevo</small></span><input id="premiumPrice" type="number" value="520" min="0" /><input value="520" type="number" disabled aria-label="Mismo precio premium" /></label>
+              <label class="input-row"><span>Precio estándar <small>COP/huevo</small></span><input id="standardPrice" type="number" value="390" min="0" /><input value="390" type="number" disabled aria-label="Mismo precio estándar" /></label>
+            </div>
+            <div class="formula-note"><strong>Resultado comparado</strong><code>ventas estimadas − costo de alimento</code><p>No incluye sanidad, mano de obra, logística, mortalidad ni costos comunes.</p></div>
+          </article>
+          <article class="panel feed-result">
+            <div class="panel-header"><div><p class="eyebrow">Resultado instantáneo</p><h2>Contribución atribuible al periodo</h2></div><span class="pill blue">Estimado</span></div>
+            <div class="winner-card"><span>Ventaja observada</span><strong id="feedWinner">Solla · +$2,1 M</strong><small id="feedWinnerPct">24,8% más contribución</small></div>
+            <div class="comparison-bars">
+              <div><span>Solla</span><div class="bar"><i id="sollaBar" style="width:84%"></i></div><strong id="sollaContribution">$10,6 M</strong></div>
+              <div><span>Hacienda</span><div class="bar alt"><i id="haciendaBar" style="width:68%"></i></div><strong id="haciendaContribution">$8,5 M</strong></div>
+            </div>
+            <div class="result-grid"><div><span>Valor de venta</span><strong id="sollaRevenue">$25,4 M</strong><small id="haciendaRevenue">Hacienda $22,5 M</small></div><div><span>Costo alimento</span><strong id="sollaFeedCost">$16,1 M</strong><small id="haciendaFeedCost">Hacienda $14,4 M</small></div><div><span>Huevos/kg</span><strong id="sollaFcr">7,86</strong><small id="haciendaFcr">Hacienda 7,43</small></div><div><span>Ingreso/kg</span><strong id="sollaValueKg">$3.626</strong><small id="haciendaValueKg">Hacienda $3.209</small></div></div>
+            <div class="decision-gate"><span>Antes de comprar</span><ul><li>Completar mínimo 14 días</li><li>Validar edad, genética, clima y sanidad</li><li>Comparar lotes o bloques equivalentes</li></ul></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-interempresas" aria-labelledby="title-interempresas">
+        <div class="page-heading"><div><p class="eyebrow">Conciliación bilateral</p><h1 id="title-interempresas">Operaciones interempresa</h1><p>Cada empresa conserva su documento; el grupo relaciona, concilia y elimina.</p></div><button class="secondary-button">Exportar diferencias</button></div>
+        <div class="reconciliation-summary"><article><span>Operaciones del periodo</span><strong>28</strong><small>$18,9 M</small></article><article><span>Conciliadas</span><strong>27</strong><small class="good">96,4%</small></article><article class="warn"><span>Con diferencia</span><strong>1</strong><small>$480.000</small></article><article><span>Listas para eliminar</span><strong>27</strong><small>$18,4 M</small></article></div>
+        <article class="panel table-panel"><div class="panel-header"><div><p class="eyebrow">Matching</p><h2>Expedientes del periodo</h2></div><div class="table-filters"><button class="filter active">Todos</button><button class="filter">Con diferencia</button><button class="filter">Conciliados</button></div></div><div class="table-scroll"><table><thead><tr><th>Operación</th><th>Vendedor</th><th>Comprador</th><th>Objeto</th><th>Documento origen</th><th>Contrapartida</th><th>Diferencia</th><th>Estado</th><th></th></tr></thead><tbody><tr class="row-warning"><td><strong>INT-0268</strong><small>05 sep · 14:22</small></td><td>La Paulina</td><td>Tamago</td><td>Transferencia 1.240 aves</td><td>$18.900.000</td><td>$18.420.000</td><td class="bad">$480.000</td><td><span class="pill red">Observado</span></td><td><button class="row-action">Resolver →</button></td></tr><tr><td><strong>INT-0267</strong><small>04 sep · 10:18</small></td><td>Transagro</td><td>Tamago</td><td>Viaje ruta norte</td><td>$1.280.000</td><td>$1.280.000</td><td>$0</td><td><span class="pill green">Conciliado</span></td><td><button class="row-action">Abrir</button></td></tr><tr><td><strong>INT-0266</strong><small>03 sep · 17:40</small></td><td>Transagro</td><td>La Paulina</td><td>Viaje alimento</td><td>$960.000</td><td>$960.000</td><td>$0</td><td><span class="pill green">Conciliado</span></td><td><button class="row-action">Abrir</button></td></tr><tr><td><strong>INT-0265</strong><small>02 sep · 12:06</small></td><td>Tamago</td><td>La Paulina</td><td>Devolución de empaques</td><td>$340.000</td><td>$340.000</td><td>$0</td><td><span class="pill green">Conciliado</span></td><td><button class="row-action">Abrir</button></td></tr></tbody></table></div></article>
+        <div class="matching-flow"><div><span>1</span><strong>Crear lado vendedor</strong><small>Documento y objeto común</small></div><i></i><div><span>2</span><strong>Aceptar lado comprador</strong><small>Cantidad, precio y fecha</small></div><i></i><div class="current"><span>3</span><strong>Conciliar diferencias</strong><small>Tolerancia o excepción</small></div><i></i><div><span>4</span><strong>Eliminar en grupo</strong><small>Solo después del cierre</small></div></div>
+      </section>
+
+      <section class="view" id="view-registro" aria-labelledby="title-registro">
+        <div class="page-heading"><div><p class="eyebrow">Capturar una vez</p><h1 id="title-registro">¿Qué ocurrió?</h1><p>Formularios cortos por tarea. El sistema deriva inventario, costos y controles.</p></div><button class="secondary-button">Ver pendientes offline · 2</button></div>
+        <div class="task-groups">
+          <article class="task-group"><div class="task-heading"><span class="company-badge tam">TAM</span><div><h2>Tamago</h2><p>Producción, clasificación y venta</p></div></div><div class="task-grid"><button data-capture-type="Recogida de huevo"><span>01</span><strong>Recogida de huevo</strong><small>Turno, lote y cantidad</small></button><button data-capture-type="Clasificación"><span>02</span><strong>Clasificación</strong><small>Cantidades por gramaje</small></button><button data-capture-type="Muestra de peso"><span>03</span><strong>Muestra de peso</strong><small>Método, unidades y peso</small></button><button data-capture-type="Movimiento de huevo"><span>04</span><strong>Movimiento de huevo</strong><small>Origen, destino y motivo</small></button></div></article>
+          <article class="task-group"><div class="task-heading"><span class="company-badge pau">PAU</span><div><h2>La Paulina</h2><p>Levante, consumo y sanidad</p></div></div><div class="task-grid"><button data-capture-type="Consumo de alimento"><span>01</span><strong>Consumo de alimento</strong><small>Batch, kg y galpón</small></button><button data-capture-type="Mortalidad"><span>02</span><strong>Mortalidad</strong><small>Cantidad, causa y evidencia</small></button><button data-capture-type="Vacunación"><span>03</span><strong>Vacunación</strong><small>Lote, dosis y costo</small></button><button data-capture-type="Transferencia de aves"><span>04</span><strong>Transferencia de aves</strong><small>Contraparte y aceptación</small></button></div></article>
+          <article class="task-group"><div class="task-heading"><span class="company-badge tra">TRA</span><div><h2>Transagro</h2><p>Viajes, cargas y costos</p></div></div><div class="task-grid"><button data-capture-type="Despacho de viaje"><span>01</span><strong>Despacho de viaje</strong><small>Vehículo, ruta y carga</small></button><button data-capture-type="Entrega"><span>02</span><strong>Entrega</strong><small>Hora, recibido y diferencias</small></button><button data-capture-type="Combustible"><span>03</span><strong>Combustible</strong><small>Litros, valor y odómetro</small></button><button data-capture-type="Peaje u otro costo"><span>04</span><strong>Peaje u otro costo</strong><small>Tipo, valor y soporte</small></button></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-estrategia" aria-labelledby="title-estrategia">
+        <div class="page-heading"><div><p class="eyebrow">Dirección de producto</p><h1 id="title-estrategia">Validar antes de ampliar</h1><p>La arquitectura cubre el grupo; el primer producto debe demostrar un cierre diario confiable.</p></div><span class="pill amber">Etapa 0</span></div>
+
+        <div class="strategy-thesis">
+          <div><span>Diagnóstico</span><strong>Existe una visión amplia y una base operativa rica, pero todavía no existe un producto validado.</strong></div>
+          <p>El riesgo principal no es técnico. Es construir captura, contabilidad, inteligencia causal y SaaS horizontal al mismo tiempo. La respuesta es una secuencia con puertas de decisión.</p>
+        </div>
+
+        <article class="panel stage-panel">
+          <div class="panel-header"><div><p class="eyebrow">Camino crítico</p><h2>Cada etapa compra el derecho a construir la siguiente</h2></div><small>Sin evidencia, no se amplía</small></div>
+          <div class="stage-roadmap">
+            <button class="stage active"><span>0</span><strong>Verdad del proceso</strong><small>10 días · observar y medir</small><b>Ahora</b></button>
+            <i></i><button class="stage"><span>1</span><strong>Cierre Tamago</strong><small>3–4 semanas · 3 recogidas</small><b>Validar</b></button>
+            <i></i><button class="stage"><span>2</span><strong>Alimento</strong><small>3 semanas · stock por batch</small><b>Conciliar</b></button>
+            <i></i><button class="stage"><span>3</span><strong>Experimento</strong><small>4–8 semanas · efecto económico</small><b>Demostrar</b></button>
+            <i></i><button class="stage"><span>4+</span><strong>Grupo y finanzas</strong><small>interempresa · integración</small><b>Escalar</b></button>
+          </div>
+          <div class="gate-rule"><span>Puerta 0</span><p>Operador, bodega y supervisor recorren el flujo sin ayuda; cada campo tiene dueño, unidad y momento; existe línea base de cinco jornadas; y no quedan definiciones incompatibles.</p></div>
+        </article>
+
+        <div class="swot-grid" aria-label="Matriz DOFA">
+          <article class="swot-card strength"><span>F</span><div><p class="eyebrow">Fortalezas</p><h2>Laboratorio real y equipo complementario</h2><ul><li>Acceso a tres empresas conectadas</li><li>Heydi integra UX y finanzas</li><li>Elkin convierte contratos en software</li><li>Excel conserva reglas y curvas del dominio</li></ul></div></article>
+          <article class="swot-card weakness"><span>D</span><div><p class="eyebrow">Debilidades</p><h2>Alcance, evidencia y reglas acopladas</h2><ul><li>Cuatro productos mezclados en una visión</li><li>Sin línea base ni prueba contextual</li><li>Ceros que pueden ocultar datos faltantes</li><li>Políticas contables aún no aprobadas</li></ul></div></article>
+          <article class="swot-card opportunity"><span>O</span><div><p class="eyebrow">Oportunidades</p><h2>Cerrar el día y aprender del dato</h2><ul><li>Menos recaptura y diferencias tardías</li><li>Trazabilidad alimento–lote–huevo</li><li>Negociación por margen, no solo por precio</li><li>Núcleo reusable después de validarlo</li></ul></div></article>
+          <article class="swot-card threat"><span>A</span><div><p class="eyebrow">Amenazas</p><h2>Falsa causalidad y rechazo operativo</h2><ul><li>Confundir correlación con efecto del alimento</li><li>Excel paralelo y datos incompletos</li><li>Fuga de información entre empresas</li><li>Automatización contable prematura</li></ul></div></article>
+        </div>
+
+        <div class="strategy-grid">
+          <article class="panel blindspots"><div class="panel-header"><div><p class="eyebrow">Crítica necesaria</p><h2>Lo que falta pensar</h2></div></div><ol><li><b>Quién paga y renueva.</b><span>El usuario y el comprador no siempre son la misma persona.</span></li><li><b>Quién gobierna cada dato.</b><span>Catálogos, tolerancias y fórmulas necesitan dueño.</span></li><li><b>Cómo falla el mundo real.</b><span>Sin red, dos dispositivos, evento tardío, reapertura y recuperación.</span></li><li><b>Qué significa “tiempo real”.</b><span>La cifra necesita estado, frescura y confianza.</span></li><li><b>Qué nunca automatizar.</b><span>Juicio técnico, política contable y causalidad requieren aprobación.</span></li></ol></article>
+          <article class="panel week-plan"><div class="panel-header"><div><p class="eyebrow">Heydi · próximos 5 días</p><h2>Trabajo que desbloquea desarrollo</h2></div><strong>8 entregables</strong></div><label><input type="checkbox"> Observar una jornada sin diseñar durante la observación</label><label><input type="checkbox"> Medir tiempo, recaptura, omisiones y cierre</label><label><input type="checkbox"> Entrevistar operador, bodega y supervisor</label><label><input type="checkbox"> Dibujar blueprint actual y propuesto</label><label><input type="checkbox"> Cerrar glosario P0 con ejemplos</label><label><input type="checkbox"> Bocetar vacío, válido, incompleto, diferencia y cerrado</label><label><input type="checkbox"> Probar con datos reales anonimizados</label><label><input type="checkbox"> Registrar decisiones y preguntas bloqueantes</label></article>
+        </div>
+
+        <article class="panel prompt-panel">
+          <div class="panel-header"><div><p class="eyebrow">Biblioteca de trabajo</p><h2>Prompts listos para usar con evidencia real</h2></div><small>Copiar y completar los campos entre corchetes</small></div>
+          <div class="prompt-grid"><button data-copy-prompt="observation"><span>01</span><strong>Analizar observación</strong><small>Separa hechos, interpretación e hipótesis</small></button><button data-copy-prompt="story"><span>02</span><strong>Preparar historia</strong><small>Flujo, excepciones y Given/When/Then</small></button><button data-copy-prompt="event"><span>03</span><strong>Contrato de evento</strong><small>IDs, estados, permisos e idempotencia</small></button><button data-copy-prompt="formula"><span>04</span><strong>Contrato de ecuación</strong><small>Población, unidad, faltantes y pruebas</small></button><button data-copy-prompt="feed"><span>05</span><strong>Ensayo de alimento</strong><small>Causalidad, bienestar y economía</small></button><button data-copy-prompt="gate"><span>06</span><strong>Revisar una puerta</strong><small>Avanzar, rediseñar o detener</small></button></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-handoff" aria-labelledby="title-handoff">
+        <div class="page-heading"><div><p class="eyebrow">Documento vivo</p><h1 id="title-handoff">Handoff para diseño y desarrollo</h1><p>Qué construir primero, qué dato necesita cada pantalla y cuándo una historia está terminada.</p></div><span class="pill blue">Prototipo v0.1</span></div>
+        <div class="handoff-grid">
+          <article class="panel handoff-card wide"><div class="panel-header"><div><p class="eyebrow">Corte vertical</p><h2>Primer flujo que debe funcionar de extremo a extremo</h2></div></div><div class="vertical-slice"><div><span>1</span><strong>Recoger</strong><small>3 turnos offline</small></div><b>→</b><div><span>2</span><strong>Clasificar</strong><small>por gramaje</small></div><b>→</b><div><span>3</span><strong>Conciliar</strong><small>recogido vs clasificado</small></div><b>→</b><div><span>4</span><strong>Valorar</strong><small>cantidad × precio neto</small></div><b>→</b><div><span>5</span><strong>Cerrar</strong><small>supervisor aprueba</small></div></div><div class="definition-done"><strong>Definición de terminado</strong><span>Funciona sin red</span><span>No duplica al sincronizar</span><span>No permite saldo negativo</span><span>Explica diferencias</span><span>Deja auditoría</span></div></article>
+          <article class="panel handoff-card"><p class="eyebrow">Pantallas P0</p><h2>Inventario de interfaz</h2><ol class="priority-list"><li><b>01</b><span>Selector empresa y periodo<small>Contexto global persistente</small></span></li><li><b>02</b><span>Registro de recogida<small>Campo / offline / móvil</small></span></li><li><b>03</b><span>Clasificación y conciliación<small>Bodega / escritorio</small></span></li><li><b>04</b><span>Cierre operativo<small>Supervisor / bloqueos</small></span></li><li><b>05</b><span>Panorama del día<small>Dirección / tiempo real</small></span></li></ol></article>
+          <article class="panel handoff-card"><p class="eyebrow">Contrato de evento</p><h2>EggCollectionRecorded</h2><pre><code>{
+  "event_id": "uuid",
+  "tenant_id": "tam",
+  "business_date": "2026-09-06",
+  "lot_id": "T-2604",
+  "collection_no": 2,
+  "quantity": 17860,
+  "occurred_at": "11:32",
+  "recorded_by": "user_id",
+  "local_event_id": "device_uuid"
+}</code></pre></article>
+          <article class="panel handoff-card"><p class="eyebrow">Estados obligatorios</p><h2>Cada cifra dice qué es</h2><div class="state-list"><span><i class="state captured"></i>Capturado</span><span><i class="state validated"></i>Validado</span><span><i class="state observed"></i>Observado</span><span><i class="state reconciled"></i>Conciliado</span><span><i class="state posted"></i>Contabilizado</span><span><i class="state closed"></i>Cerrado</span></div><p class="card-note">Nunca mostrar un estimado con la misma apariencia de un dato cerrado.</p></article>
+          <article class="panel handoff-card"><p class="eyebrow">Tokens base</p><h2>Sistema visual inicial</h2><div class="token-grid"><span style="--swatch:#10283d"><i></i>Ink 900<code>#10283D</code></span><span style="--swatch:#18a999"><i></i>Teal 500<code>#18A999</code></span><span style="--swatch:#f5a623"><i></i>Amber 500<code>#F5A623</code></span><span style="--swatch:#eef3f6"><i></i>Mist 100<code>#EEF3F6</code></span></div><div class="spacing-scale"><span>4</span><span>8</span><span>12</span><span>16</span><span>24</span><span>32</span></div></article>
+          <article class="panel handoff-card wide"><div class="panel-header"><div><p class="eyebrow">Responsabilidades</p><h2>Acuerdo de trabajo Heydi ↔ Elkin</h2></div></div><div class="role-columns"><div><span>Heydi · Producto/UX/Finanzas</span><ul><li>Prioriza problema y flujo</li><li>Define lenguaje y jerarquía</li><li>Aprueba fórmula y estado</li><li>Entrega casos y reglas</li><li>Valida con usuarios</li></ul></div><div><span>Elkin · Ingeniería</span><ul><li>Modela eventos y permisos</li><li>Implementa captura offline</li><li>Versiona reglas y métricas</li><li>Expone estados y auditoría</li><li>Automatiza pruebas</li></ul></div><div><span>Ambos · Criterio común</span><ul><li>Una cifra, una definición</li><li>Una acción, un responsable</li><li>Ningún cierre sin control</li><li>Ningún supuesto oculto</li><li>Demo semanal con evidencia</li></ul></div></div></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="captureDialog" aria-labelledby="captureTitle">
+    <form method="dialog" id="captureForm">
+      <div class="dialog-header"><div><p class="eyebrow">Nuevo evento</p><h2 id="captureTitle">Registrar hecho operativo</h2></div><button class="close-button" value="cancel" aria-label="Cerrar">×</button></div>
+      <div class="form-grid"><label><span>Empresa</span><select id="captureCompany"><option>Tamago</option><option>La Paulina</option><option>Transagro</option></select></label><label><span>Tipo de evento</span><select id="captureType"><option>Recogida de huevo</option><option>Clasificación</option><option>Consumo de alimento</option><option>Viaje entregado</option><option>Conteo físico</option></select></label><label><span>Fecha de negocio</span><input type="date" value="2026-09-06" /></label><label><span>Lote / viaje</span><input type="text" value="T-2604" /></label><label class="full-field"><span>Cantidad</span><div class="input-with-unit"><input type="number" value="17200" min="0" /><select aria-label="Unidad"><option>huevos</option><option>kg</option><option>aves</option><option>viajes</option></select></div></label><label class="full-field"><span>Nota o diferencia</span><textarea placeholder="Opcional. Explique solo cuando exista una novedad."></textarea></label></div>
+      <div class="validation-message"><span>✓</span><div><strong>Validación disponible sin conexión</strong><small>El evento recibirá un identificador local para evitar duplicados al sincronizar.</small></div></div>
+      <div class="dialog-actions"><button value="cancel" class="secondary-button">Cancelar</button><button value="default" class="primary-button" id="saveCapture">Guardar evento</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"><span>✓</span><div><strong>Evento guardado</strong><small>Quedó listo para sincronizar y validar.</small></div></div>
+  <script src="./app.js"></script>
+</body>
+</html>

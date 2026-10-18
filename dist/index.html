@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#173d32" />
+  <meta name="description" content="Boceto operativo de Tamago para registrar un nuevo lote en origen y consultar resultados del mes. Guardado local." />
+  <title>Tamago · Cuaderno de operación</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./pilot.css" />
+</head>
+<body>
+  <a class="skip-link" href="#screen">Saltar al contenido</a>
+  <div class="pilot-layout">
+    <aside class="rail">
+      <a class="pilot-brand" href="./index.html" aria-label="Tamago, inicio"><span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 36 42"><path d="M18 3C10 3 4 18 4 26a14 14 0 0 0 28 0C32 18 26 3 18 3Z"/><path d="M7 26c8-9 14-10 23-8M9 33c6-7 12-9 21-8"/></svg></span><span>tamago<small>Cuaderno de operación</small></span></a>
+      <div class="rail-label">TU ESPACIO DE TRABAJO</div>
+      <nav aria-label="Navegación principal">
+        <button class="rail-item active" data-view="overview"><span data-icon="dashboard"></span><span>Panorama</span></button>
+        <button class="rail-item" data-view="day"><span data-icon="sun"></span><span>Mi jornada</span><i id="pendingBadge">3</i></button>
+        <button class="rail-item" data-view="feed"><span data-icon="grain"></span><span>Alimento</span></button>
+        <button class="rail-item" data-view="stock"><span data-icon="box"></span><span>Existencias</span></button>
+        <button class="rail-item" data-view="history"><span data-icon="history"></span><span>Registros</span></button>
+      </nav>
+      <div class="rail-divider"></div>
+      <button class="rail-item" data-view="setup"><span data-icon="sliders"></span><span>Configurar prueba</span></button>
+      <a class="rail-item vision-link" href="./vision.html"><span data-icon="layers"></span><span>Visión multiempresa</span><span class="external-mark">↗</span></a>
+      <div class="rail-bottom"><div class="rail-note"><span class="small-label">DEL GALPÓN A LA DECISIÓN</span><p>Cada registro cuenta.<br>Cada cifra tiene un origen.</p><span class="note-line"></span></div><div class="rail-profile"><span class="profile-circle">T</span><div><strong>Equipo Tamago</strong><small>Espacio de prototipado</small></div><span class="profile-dot"></span></div></div>
+    </aside>
+    <div class="main-shell">
+      <header class="pilot-topbar">
+        <div class="breadcrumb"><span class="company-token">TAM</span><span>Tamago</span><span class="slash">/</span><strong id="lotLabel">Nuevo lote</strong></div>
+        <div class="top-controls"><label class="mode-control"><span class="sr-only">Espacio de prueba</span><select id="workspaceMode"><option value="demo">Explorar ejemplo</option><option value="field">Mi prueba nueva</option></select></label><button class="button button-plain export-button" data-action="export"><span data-icon="download"></span>Exportar</button><span class="top-avatar" aria-hidden="true">T</span></div>
+      </header>
+      <div class="prototype-notice"><span data-icon="monitor"></span><span id="environmentText">Ejemplo ficticio · los cambios se guardan solo en este navegador.</span><span class="notice-pill">Boceto interactivo</span></div>
+      <div class="storage-warning" id="storageWarning" role="alert" hidden></div>
+      <main id="screen" tabindex="-1"></main>
+      <footer class="pilot-footer"><span>Diseñado desde la operación de Tamago.</span><span>Prueba local · sin servidor ni sincronización entre equipos</span></footer>
+    </div>
+  </div>
+  <dialog id="recordDialog" class="record-dialog" aria-labelledby="dialogTitle"><div id="dialogContent"></div></dialog>
+  <div id="toast" class="pilot-toast" role="status" aria-live="polite" hidden></div>
+  <noscript><p>Activa JavaScript para recorrer el prototipo. No se ha enviado ningún dato.</p></noscript>
+  <script type="module" src="./pilot-app.mjs"></script>
+</body>
+</html>

@@ -28,3 +28,5 @@ Recuperación: conservar el origen/puerto/perfil, reintentar el mismo evento sin
 Búsqueda previa vía GitHub API: `issues?state=all&per_page=100` devuelve `[]`. La configuración no accesible por conector se verificó en navegador: Pages solo main/raíz, sin webhooks ni GitHub Apps y único workflow de Pages. Creada y verificada la [issue #1](https://github.com/monicongocreativo-lab/SAAS/issues/1) por UI autorizada tras respuesta 403 del conector, sin duplicación. Debe seguir abierta hasta validación física.
 
 Entrega: `DEV002.md`, `contracts/collection-export.v1.schema.json` y `EVIDENCIA_DEV002_20261022.md`. 25 casos Node y 5 recorridos de navegador pasan; no equivalen a validación en campo. Publicar solo rama de tarea/PR borrador, sin integrar main ni desplegar.
+
+Resultado remoto: issue #1 creada; rama/PR **no publicados**. Push sin credenciales y conector 403 para crear rama. Main intacto; rama local en bundle `artifacts/DEV-002.bundle`, texto en `BORRADOR_PR_DEV002.md`. Autorización existente; falta canal con escritura. Revalidar disparadores antes de reanudar publicación. Pruebas físicas pendientes.

@@ -59,4 +59,8 @@ Antes de escribir en GitHub se verificó: issues vacías; Pages desde **main / r
 
 La rama se prepara en copia de revisión temporal desde main remoto `316072e6e5abc465bd48bc44128b4ed1f7a68165`, cuya historia era distinta de la local aunque coincidían los archivos de aplicación. No se reseteó ni cambió de rama el checkout del usuario. Primer commit conserva solo código/pruebas DEV-001 necesarios; siguiente incorpora el experimento. No se publican originales de operación, análisis con cifras reales ni los demás cambios locales. No se agrega CI ni se modifica main/Pages.
 
-Issue abierta por validación física; PR borrador con `Refs #1`, sin cierre automático. Registro final de PR/commit se añade después de verificar publicación. Despliegue fuera de autorización.
+Issue abierta por validación física. **PR no publicado**: `git push --set-upstream origin dev/dev-002-offline` falló por ausencia de credenciales (`could not read Username`); el conector rechazó crear rama con HTTP 403 `Resource not accessible by integration`. No fue rechazo de revisión automática de aprobación. La autorización del usuario existe; falta un canal Git con escritura, no un nuevo permiso de negocio. No se buscaron ni extrajeron secretos de la sesión del navegador.
+
+Verificación posterior mediante `git ls-remote`: main sigue en `316072e6e5abc465bd48bc44128b4ed1f7a68165`; no existe rama remota `dev/dev-002-offline`. Commits locales de revisión: `c35f7b8` (DEV-001 previo) y `4d804598775cf6b97ae24a15cbb4696f69b8f94f` (código DEV-002). La copia aislada completó instalación limpia y `check` sin diferencias de build.
+
+Se conserva `BORRADOR_PR_DEV002.md` con `Refs #1` y un bundle local de la rama en `artifacts/DEV-002.bundle`; no representan un PR publicado. El bundle se verifica con Git antes de entregar e incluye un commit documental posterior. Reanudar desde él y volver a verificar disparadores remotos antes de publicar. La issue sigue abierta y no hubo merge/despliegue.

@@ -64,3 +64,9 @@ Issue abierta por validación física. **PR no publicado**: `git push --set-upst
 Verificación posterior mediante `git ls-remote`: main sigue en `316072e6e5abc465bd48bc44128b4ed1f7a68165`; no existe rama remota `dev/dev-002-offline`. Commits locales de revisión: `c35f7b8` (DEV-001 previo) y `4d804598775cf6b97ae24a15cbb4696f69b8f94f` (código DEV-002). La copia aislada completó instalación limpia y `check` sin diferencias de build.
 
 Se conserva `BORRADOR_PR_DEV002.md` con `Refs #1` y un bundle local de la rama en `artifacts/DEV-002.bundle`; no representan un PR publicado. El bundle se verifica con Git antes de entregar e incluye un commit documental posterior. Reanudar desde él y volver a verificar disparadores remotos antes de publicar. La issue sigue abierta y no hubo merge/despliegue.
+
+### Actualización de publicación · 22/10/2026
+
+La rama [`dev/dev-002-offline`](https://github.com/monicongocreativo-lab/SAAS/tree/dev/dev-002-offline) se publicó y el PR [#2](https://github.com/monicongocreativo-lab/SAAS/pull/2) quedó abierto como borrador, asociado a la issue [#1](https://github.com/monicongocreativo-lab/SAAS/issues/1). El texto anterior describe correctamente el bloqueo observado antes de completar el acceso y se conserva como registro histórico.
+
+Después de publicar: PR `OPEN` y `isDraft=true`; issue `OPEN`; `main` sigue en `316072e6e5abc465bd48bc44128b4ed1f7a68165`; no se creó un nuevo workflow run. El único run visible continúa siendo Pages desde `main` (18/10/2026). No hubo merge ni despliegue. Android/iPhone/iPad físicos y revisión del PR continúan pendientes.

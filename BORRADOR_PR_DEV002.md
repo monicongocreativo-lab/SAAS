@@ -1,6 +1,6 @@
 # DEV-002: demostrar captura offline recuperable con contrato versionado
 
-**Texto preparado; PR no publicado por falta de canal Git con escritura.**
+**PR borrador para revisión; no fusionar ni desplegar.**
 
 Refs #1
 
@@ -10,6 +10,6 @@ Validación: instalación limpia desde lockfile y caché, `TAMAGO_BROWSER_CHANNE
 
 Solo datos ficticios e identidades declaradas. Android/iPhone/iPad físicos, 24 h reales, cuotas/evicción reales, actualizaciones de shell en hardware y Chromium de Playwright pendientes. No hay servidor, autenticación, aprobación ni sincronización. La issue permanece abierta y el PR debe ser **borrador**; no usar `Closes`.
 
-Publicación: destino main, rama `dev/dev-002-offline`; no hacer merge. Verificados Pages solo main/raíz, sin webhooks/Apps y único workflow de Pages. No se añade CI ni despliegue. Volver a comprobar esos ajustes al recuperar el acceso de escritura. No publicar originales, datos operativos ni otros documentos locales fuera de esta rama revisada.
+Publicación: destino main, rama `dev/dev-002-offline`; no hacer merge. Verificados Pages solo main/raíz, sin webhooks/Apps y único workflow de Pages. No se añade CI ni despliegue. No publicar originales, datos operativos ni otros documentos locales fuera de esta rama revisada.
 
 Recuperación: mantener origen/perfil; exportar y verificar JSON; importar conserva IDs y rechaza conflictos sin reemplazo. La reversión de código debe preservar la DB y sus pendientes, nunca borrar registros. Guion físico, limitaciones y decisión reversible de persistencia en `DEV002.md`.

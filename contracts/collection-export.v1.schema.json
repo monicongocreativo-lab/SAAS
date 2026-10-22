@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tamago:experimental:collection-export:1",
+  "title": "DEV-002 synthetic collection export v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "schema_version", "environment", "records"],
+  "properties": {
+    "format": { "const": "tamago.collection-export" },
+    "schema_version": { "const": 1 },
+    "environment": { "const": "synthetic" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/record" }
+    }
+  },
+  "definitions": {
+    "syntheticId": { "type": "string", "pattern": "^SYN-[A-Za-z0-9_-]{1,64}$" },
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "instant": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "delivery"],
+      "properties": {
+        "event": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "schema_version",
+            "event_type",
+            "environment",
+            "company_id",
+            "lot_id",
+            "shed_id",
+            "business_date",
+            "time_zone",
+            "occurred_at",
+            "captured_at",
+            "occurrence",
+            "quantity_eggs",
+            "actor",
+            "device",
+            "capture_status"
+          ],
+          "properties": {
+            "event_id": { "$ref": "#/definitions/uuid" },
+            "schema_version": { "const": 1 },
+            "event_type": { "const": "collection.recorded" },
+            "environment": { "const": "synthetic" },
+            "company_id": { "$ref": "#/definitions/syntheticId" },
+            "lot_id": { "$ref": "#/definitions/syntheticId" },
+            "shed_id": { "$ref": "#/definitions/syntheticId" },
+            "business_date": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "time_zone": { "const": "America/Bogota" },
+            "occurred_at": { "$ref": "#/definitions/instant" },
+            "captured_at": { "$ref": "#/definitions/instant" },
+            "occurrence": { "type": "integer", "minimum": 1, "maximum": 3 },
+            "quantity_eggs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "capture_status": { "const": "provisional" },
+            "actor": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["declared_id", "assurance"],
+              "properties": {
+                "declared_id": { "$ref": "#/definitions/syntheticId" },
+                "assurance": { "const": "declared-unverified" }
+              }
+            },
+            "device": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["installation_id", "assurance"],
+              "properties": {
+                "installation_id": { "$ref": "#/definitions/uuid" },
+                "assurance": { "const": "local-installation-unverified" }
+              }
+            }
+          }
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": { "status": { "const": "pending" } }
+        }
+      }
+    }
+  }
+}

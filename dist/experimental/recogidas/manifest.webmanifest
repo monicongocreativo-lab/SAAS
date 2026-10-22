@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Tamago DEV-002 · Ficticio",
+  "short_name": "DEV-002",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5ee",
+  "theme_color": "#173d32",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

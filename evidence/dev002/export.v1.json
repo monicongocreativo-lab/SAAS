@@ -1,0 +1,36 @@
+{
+  "format": "tamago.collection-export",
+  "schema_version": 1,
+  "environment": "synthetic",
+  "records": [
+    {
+      "event": {
+        "event_id": "409a25fd-a15a-4f7a-991d-5db6b4483ec9",
+        "schema_version": 1,
+        "event_type": "collection.recorded",
+        "environment": "synthetic",
+        "company_id": "SYN-TAMAGO",
+        "lot_id": "SYN-LOTE-01",
+        "shed_id": "SYN-GALPON-01",
+        "business_date": "2026-10-21",
+        "time_zone": "America/Bogota",
+        "occurred_at": "2026-10-21T22:30:00.000Z",
+        "captured_at": "2026-10-22T15:34:14.848Z",
+        "occurrence": 1,
+        "quantity_eggs": 7200,
+        "actor": {
+          "declared_id": "SYN-OPERADOR-01",
+          "assurance": "declared-unverified"
+        },
+        "device": {
+          "installation_id": "72b2d29d-5690-4f95-9624-1d1aefe77b68",
+          "assurance": "local-installation-unverified"
+        },
+        "capture_status": "provisional"
+      },
+      "delivery": {
+        "status": "pending"
+      }
+    }
+  ]
+}

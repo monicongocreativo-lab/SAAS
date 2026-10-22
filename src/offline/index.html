@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d32"><title>Recogidas offline · DEV-002</title>
+  <link rel="stylesheet" href="./offline.css"><link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><script type="module" src="./app.js"></script>
+</head>
+<body><main>
+  <header><p class="eyebrow">TAMAGO · LABORATORIO DEV-002</p><h1>Recogidas sin conexión</h1>
+    <p>Experimental · exclusivamente datos ficticios. Identidades declaradas, sin autenticación ni permisos efectivos. No usar como registro empresarial.</p></header>
+  <section aria-label="Disponibilidad"><p id="offlineState" role="status">Preparando pantalla sin red…</p><p id="connection"></p>
+    <p id="retention">Los datos dependen de este navegador y origen. Exporta respaldo; el dispositivo puede eliminar almacenamiento.</p>
+    <button id="protect" type="button">Solicitar conservación al navegador</button></section>
+  <p id="error" role="alert" hidden></p><p id="notice" role="status"></p>
+  <section><h2>Registrar un hecho</h2><p>Un origen diario por empresa, lote, galpón y fecha. Una a tres recogidas reales; no inventes ceros para completar tres.</p>
+    <form id="capture">
+      <fieldset id="fields" disabled><legend>Origen y recogida ficticios</legend><div class="grid">
+        <label>Empresa ficticia<select name="company_id"><option>SYN-TAMAGO</option><option>SYN-PAULINA</option><option>SYN-TRANSAGRO</option></select></label>
+        <label>Lote ficticio<input name="lot_id" value="SYN-LOTE-01" required pattern="SYN-[A-Za-z0-9_-]{1,64}"></label>
+        <label>Galpón ficticio<input name="shed_id" value="SYN-GALPON-01" required pattern="SYN-[A-Za-z0-9_-]{1,64}"></label>
+        <label>Autor declarado ficticio<input name="actor_id" value="SYN-OPERADOR-01" required pattern="SYN-[A-Za-z0-9_-]{1,64}"></label>
+        <label>Fecha del hecho · Colombia<input name="business_date" type="date" required></label>
+        <label>Hora del hecho · Colombia<input name="time" type="time" step="60" required></label>
+        <label>Ocurrencia<select name="occurrence"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+        <label>Cantidad · huevos enteros<input name="quantity_eggs" type="number" min="0" max="9007199254740991" step="1" required inputmode="numeric"></label>
+      </div><button type="submit" id="save">Guardar en este dispositivo</button></fieldset>
+    </form>
+  </section>
+  <section><h2>Registros locales pendientes</h2><p id="summary">Leyendo almacenamiento…</p><p id="age"></p><ul id="records"></ul>
+    <button id="export" type="button" disabled>Exportar respaldo JSON</button>
+    <label class="restore">Recuperar respaldo del experimento<input id="restore" type="file" accept=".json,application/json" disabled></label>
+    <p>Exportar o recuperar no significa enviar, sincronizar ni aceptar. Nunca se vacía la cola. Cambiar empresa en el formulario no es un control de acceso.</p>
+  </section><footer><a href="../../index.html">Volver al cuaderno v1</a> · Cuaderno y experimento tienen almacenamiento separado.</footer>
+</main></body></html>

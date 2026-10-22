@@ -1,0 +1,17 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.2/schema.json",
+  "files": {
+    "includes": [
+      "src/offline/**",
+      "scripts/**",
+      "tests/offline-contract.test.mjs",
+      "tests/browser/offline.test.mjs",
+      "tests/fixtures/offline-harness.mjs",
+      "contracts/**",
+      "package.json",
+      "biome.json"
+    ]
+  },
+  "formatter": { "indentStyle": "space" },
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } }
+}

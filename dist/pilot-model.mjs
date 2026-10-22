@@ -28,6 +28,16 @@ function validDate(value) {
   return value;
 }
 
+/** Date of the operational day in Colombia, independent of the device timezone. */
+export function getOperationalDate(now = new Date()) {
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) ERROR('Fecha y hora de referencia inválidas.');
+  const parts = new Intl.DateTimeFormat('en', {
+    timeZone: 'America/Bogota', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(now);
+  const value = type => parts.find(part => part.type === type).value;
+  return `${value('year')}-${value('month')}-${value('day')}`;
+}
+
 function quantity(value, label, { integer = false, positive = false, decimals = false } = {}) {
   if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || (positive && value === 0) ||
       (integer && !Number.isSafeInteger(value)) ||
@@ -106,9 +116,20 @@ export function getDaySummary(state, lotId, businessDate) {
     unclassified: Math.max(0, difference), difference,
     classEventId: classification?.id ?? null, supplyEventId: supply?.id ?? null, mortalityEventId: mortality?.id ?? null,
     feedSuppliedBags, feedSuppliedKg, mortality: mortality?.payload.quantity ?? null, birds,
-    posturePct: birds > 0 ? collected / birds * 100 : null,
+    posturePct: birds > 0 && collections.length > 0 ? collected / birds * 100 : null,
     gramsPerBird: birds > 0 && feedSuppliedKg !== null ? feedSuppliedKg * 1000 / birds : null,
     closed: Boolean(close), closedBy: close?.payload.closedBy ?? null,
+  };
+}
+
+/** Three is the usual frequency, not three required records or implied zeroes. */
+export function getCollectionStatus(state, lotId, businessDate, now = new Date()) {
+  const day = getDaySummary(state, lotId, businessDate);
+  const recorded = day.collections.length;
+  return {
+    recorded, expected: 3, hasData: recorded > 0,
+    belowUsualFrequency: recorded > 0 && recorded < 3,
+    alert: recorded === 0 && businessDate < getOperationalDate(now),
   };
 }
 
@@ -141,7 +162,7 @@ export function getHistory(state, lotId) {
   const dates = [...new Set(getActiveEvents(state).filter(e => e.lotId === lotId).map(e => e.businessDate))].sort();
   return dates.map(date => {
     const day = getDaySummary(state, lotId, date);
-    return { date, collected: day.collected, classifiedForSale: day.classifiedForSale, dirty: day.dirty,
+    return { date, collected: day.collections.length > 0 ? day.collected : null, classifiedForSale: day.classifiedForSale, dirty: day.dirty,
       lost: day.lost, feedSuppliedKg: day.feedSuppliedKg, birds: day.birds, posturePct: day.posturePct, closed: day.closed };
   });
 }
@@ -204,7 +225,7 @@ export function recordEvent(state, input) {
   if (state.events.some(e => e.id === id)) ERROR('El identificador del registro ya existe.');
   if (input.type === 'close') {
     const day = getDaySummary(state, input.lotId, input.businessDate);
-    if (day.collections.length !== 3) ERROR('Faltan las tres recogidas para cerrar.');
+    if (day.collections.length === 0) ERROR('Falta información de al menos una recogida para cerrar.');
     if (!day.classEventId) ERROR('Falta el informe de clasificación para cerrar.');
     if (day.difference !== 0) ERROR('Hay huevo pendiente de clasificar o una diferencia sin conciliar.');
     if (!day.supplyEventId || !day.mortalityEventId) ERROR('Falta el informe de suministro o mortalidad. Registra cero cuando corresponda.');

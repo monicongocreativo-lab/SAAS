@@ -1,0 +1,141 @@
+:root {
+  color-scheme: light;
+  font-family: system-ui, sans-serif;
+  color: #173d32;
+  background: #f3f5ee;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 940px;
+  margin: auto;
+  padding: 24px 18px 56px;
+}
+header {
+  margin-bottom: 28px;
+}
+h1 {
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+h2 {
+  font-size: 1.25rem;
+}
+p {
+  line-height: 1.55;
+}
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+section {
+  background: white;
+  border: 1px solid #c6d0c1;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 18px 0;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+legend {
+  padding-bottom: 14px;
+  font-weight: 600;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+input,
+select,
+button {
+  font: inherit;
+  min-height: 46px;
+  border: 1px solid #81947e;
+  border-radius: 7px;
+  padding: 10px;
+  width: 100%;
+  min-width: 0;
+}
+button {
+  background: #173d32;
+  color: white;
+  cursor: pointer;
+  margin-top: 16px;
+  width: auto;
+  max-width: 100%;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+:focus-visible {
+  outline: 3px solid #ab6111;
+  outline-offset: 3px;
+}
+[role="alert"] {
+  background: #fff0eb;
+  color: #8a2813;
+  padding: 16px;
+  border-left: 4px solid #aa371c;
+}
+#notice:empty {
+  display: none;
+}
+#notice {
+  border-left: 4px solid #436e2e;
+  padding: 12px;
+  background: #e5eedc;
+}
+ul {
+  padding: 0;
+  list-style: none;
+}
+li {
+  border-top: 1px solid #d8dfd3;
+  padding: 16px 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+li small {
+  display: block;
+}
+.restore {
+  margin: 22px 0;
+}
+footer {
+  line-height: 1.5;
+}
+a {
+  color: #173d32;
+}
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  section {
+    padding: 16px;
+  }
+  button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}

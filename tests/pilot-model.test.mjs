@@ -141,7 +141,7 @@ test('mortality uses one active report and changes calculated birds, never dupli
 });
 
 test('local close requires complete reports and exact reconciliation, then blocks all modifications', () => {
-  assert.throws(() => add(fresh(), 'close', { closedBy: 'David' }), /tres recogidas/);
+  assert.throws(() => add(fresh(), 'close', { closedBy: 'David' }), /al menos una recogida/);
   assert.throws(() => add(collected(), 'close', { closedBy: 'David' }), /clasificación/);
   const partial = add(collected(), 'classification', classification(29));
   assert.throws(() => add(partial, 'close', { closedBy: 'David' }), /diferencia/);

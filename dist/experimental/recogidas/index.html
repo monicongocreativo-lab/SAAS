@@ -2,16 +2,95 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#173d32"><title>Recogidas offline · DEV-002</title>
+  <meta name="theme-color" content="#173d32"><title>Recogidas · Registro de campo</title>
   <link rel="stylesheet" href="./offline.css"><link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml"><script type="module" src="./app.js"></script>
 </head>
-<body><main>
-  <header><p class="eyebrow">TAMAGO · LABORATORIO DEV-002</p><h1>Recogidas sin conexión</h1>
-    <p>Experimental · exclusivamente datos ficticios. Identidades declaradas, sin autenticación ni permisos efectivos. No usar como registro empresarial.</p></header>
-  <section aria-label="Disponibilidad"><p id="offlineState" role="status">Preparando pantalla sin red…</p><p id="connection"></p>
+<body><main class="field-shell">
+  <header class="field-header"><a class="field-brand" href="#authenticatedContext"><img src="./icon.svg" alt="" width="44" height="44"><span><strong>Tamago</strong><small>Registro de campo</small></span></a><span class="field-badge">Prueba operativa</span></header>
+  <div class="page-heading"><p class="eyebrow">REGISTRO OPERATIVO · EXPERIMENTAL</p><h1>Flujo de recogidas</h1><p>Identifícate, registra lo ocurrido y consulta el estado de tus huevos.</p></div>
+  <nav class="field-steps" aria-label="Pasos del flujo"><a href="#authenticatedContext"><span>1</span><strong>Identificar</strong><small>Tu cuenta y ámbito</small></a><a href="#collectionCapture"><span>2</span><strong>Registrar</strong><small>La recogida real</small></a><a href="#collectionStatus"><span>3</span><strong>Estado</strong><small>Guardado y envío</small></a></nav>
+  <aside class="field-note">Experimental: usa solo datos ficticios. Guardar en la tableta no significa enviar ni aprobar. La identidad y el contexto se verifican con los servicios existentes.</aside>
+  <section class="availability" aria-label="Disponibilidad"><p id="offlineState" role="status">Preparando pantalla sin red…</p><p id="connection"></p>
     <p id="retention">Los datos dependen de este navegador y origen. Exporta respaldo; el dispositivo puede eliminar almacenamiento.</p>
     <button id="protect" type="button">Solicitar conservación al navegador</button></section>
+  <section id="authenticatedContext" aria-labelledby="contextTitle" tabindex="-1">
+    <h2 id="contextTitle">1 · Identificar y elegir contexto</h2>
+    <p>El catálogo completo se consulta online. Solo se conserva el ámbito preparado abajo para abrir la identidad sin red. No cambia ni atribuye las recogidas sintéticas.</p>
+    <p id="authStatus" role="status" aria-live="polite">Comprobando sesión…</p>
+    <p id="authError" role="alert" hidden></p>
+    <button id="refreshSession" type="button">Volver a comprobar sesión online</button>
+    <p>Al comprobar la sesión se bloquea el perfil local; después vuelve a abrirlo con tu contraseña personal.</p>
+    <form id="loginForm">
+      <div class="grid">
+        <label>Correo<input name="email" type="email" autocomplete="username" required maxlength="320"></label>
+        <label>Contraseña<input name="password" type="password" autocomplete="current-password" required maxlength="1024"></label>
+      </div>
+      <button type="submit">Iniciar sesión para consultar</button>
+    </form>
+    <form id="passwordChangeForm" hidden>
+      <p>La cuenta requiere cambiar la contraseña temporal antes de continuar.</p>
+      <div class="grid">
+        <label>Nueva contraseña<input name="new_password" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></label>
+        <label>Confirma la contraseña<input name="confirm_password" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></label>
+      </div>
+      <button type="submit">Cambiar contraseña</button>
+    </form>
+    <div id="catalogPanel" hidden>
+      <p id="accountIdentity"></p>
+      <div class="grid">
+        <label>Empresa<select id="catalogCompany" disabled><option value="">Cargando…</option></select></label>
+        <label>Sede<select id="catalogSite" disabled><option value="">Elige empresa primero</option></select></label>
+        <label>Galpón<select id="catalogHouse" disabled><option value="">Elige sede primero</option></select></label>
+        <label>Lote<select id="catalogLot" disabled><option value="">Elige galpón primero</option></select></label>
+      </div>
+      <p id="catalogStatus" role="status" aria-live="polite"></p>
+      <button id="retryCatalog" type="button" hidden>Reintentar catálogo</button>
+      <button id="logout" type="button">Cerrar sesión</button>
+      <p><a href="../custody/#dispatchPanel">Registrar entrega a Bodega · requiere conexión</a>. Usa únicamente recogidas ya recibidas por el servidor.</p>
+    </div>
+  </section>
+  <section id="passwordIdentity" aria-labelledby="passwordIdentityTitle">
+    <h2 id="passwordIdentityTitle">Tu identidad en esta tableta</h2>
+    <p>Con sesión y red, selecciona empresa, sede, galpón y lote arriba y prepara tu identidad en esta tableta. Luego podrás abrirla y registrar aquí sin conexión. Los registros sintéticos del área legado permanecen independientes.</p>
+    <form id="prepareIdentityForm" hidden>
+      <label>Confirma tu contraseña personal<input type="password" autocomplete="current-password" minlength="12" maxlength="1024" required></label>
+      <button type="submit" disabled>Preparar o renovar identidad offline</button>
+    </form>
+    <form id="unlockIdentityForm">
+      <label>Perfil preparado<select id="offlineProfile" required><option value="">Cargando perfiles…</option></select></label>
+      <label>Contraseña personal<input type="password" autocomplete="current-password" minlength="12" maxlength="1024" required></label>
+      <button type="submit">Abrir identidad local sin red</button>
+    </form>
+    <button id="lockIdentity" type="button">Bloquear / cambiar trabajador</button>
+    <p id="identityStatus" role="status" aria-live="polite">Identidad local bloqueada.</p>
+    <p id="identityError" role="alert" hidden></p>
+    <section id="collectionCapture" class="capture-sheet" tabindex="-1" aria-labelledby="captureTitle">
+    <p class="eyebrow">PASO 2 · REGISTRAR</p><h2 id="captureTitle">Registrar recogida</h2>
+    <p>El origen y el autor se toman del perfil abierto. Una, dos o tres recogidas reales; no inventes ceros para completar tres.</p>
+    <form id="identityCaptureForm">
+      <fieldset id="identityCaptureFields" disabled><legend>El origen y el autor proceden del perfil abierto</legend>
+        <div class="grid">
+          <label>Fecha del hecho · Colombia<input name="protected_business_date" type="date" required></label>
+          <label>Hora del hecho · Colombia<input name="protected_time" type="time" required></label>
+          <label>Número de recogida real<select name="protected_occurrence"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+          <label>Huevos enteros<input name="protected_quantity_eggs" type="number" min="0" step="1" inputmode="numeric" placeholder="0" required></label>
+        </div>
+        <button id="saveIdentityCollection" type="submit">Guardar recogida firmada en esta tableta</button>
+      </fieldset>
+    </form>
+    <p id="identityCaptureStatus" role="status" aria-live="polite">Abre un perfil para registrar o consultar sus recogidas.</p>
+    </section><section id="collectionStatus" class="records-sheet" tabindex="-1" aria-labelledby="recordsTitle"><p class="eyebrow">PASO 3 · ESTADO</p><h2 id="recordsTitle">Tus registros</h2>
+    <p id="identityQueueSummary" class="queue-summary" role="status" aria-live="polite">Abre un perfil para consultar sus registros.</p>
+    <ul id="identityRecords"></ul>
+    <p id="identitySyncStatus" role="status" aria-live="polite">Abre tu perfil y sesión online para enviar tus pendientes.</p>
+    <button id="syncIdentityCollections" type="button" disabled>Enviar mis pendientes al servidor</button>
+    <button id="exportIdentityCollections" type="button" disabled>Exportar mis registros firmados · JSON</button>
+    <p>El archivo exportado conserva el paquete original y su estado inicial pendiente para recuperación; el acuse local se muestra por separado. Contiene datos legibles, IDs y firmas. El contenido local de la cola queda cifrado; sus identificadores de búsqueda siguen visibles al navegador.</p>
+  </section>
+  </section>
+  <details id="legacyExperiment"><summary>Laboratorio separado · recogidas sintéticas DEV-002</summary>
+  <h2 class="legacy-heading">Área legado · recogidas sintéticas DEV-002</h2>
   <p id="error" role="alert" hidden></p><p id="notice" role="status"></p>
   <section><h2>Registrar un hecho</h2><p>Un origen diario por empresa, lote, galpón y fecha. Una a tres recogidas reales; no inventes ceros para completar tres.</p>
     <form id="capture">
@@ -31,5 +110,5 @@
     <button id="export" type="button" disabled>Exportar respaldo JSON</button>
     <label class="restore">Recuperar respaldo del experimento<input id="restore" type="file" accept=".json,application/json" disabled></label>
     <p>Exportar o recuperar no significa enviar, sincronizar ni aceptar. Nunca se vacía la cola. Cambiar empresa en el formulario no es un control de acceso.</p>
-  </section><footer><a href="../../index.html">Volver al cuaderno v1</a> · Cuaderno y experimento tienen almacenamiento separado.</footer>
+  </section></details><footer><a href="../../index.html">Volver al cuaderno v1</a> · Cuaderno y experimento tienen almacenamiento separado.</footer>
 </main></body></html>

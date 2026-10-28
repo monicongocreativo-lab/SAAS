@@ -1,0 +1,3 @@
+-- DEV-004 local environment intentionally has no persistent test identities.
+-- tests/auth-prototype.test.mjs creates short-lived synthetic Auth users and
+-- company rows through the local admin API and deletes them after the test.

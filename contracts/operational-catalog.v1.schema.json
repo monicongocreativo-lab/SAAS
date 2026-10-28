@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tamago.example/contracts/operational-catalog.v1.schema.json",
+  "title": "Tamago authenticated operational catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["company", "sites", "houses", "lots"],
+  "properties": {
+    "company": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "code", "legal_name", "status"],
+      "properties": {
+        "id": { "$ref": "#/definitions/uuid" },
+        "code": { "type": "string" },
+        "legal_name": { "type": "string" },
+        "status": { "enum": ["active", "suspended", "closed"] }
+      }
+    },
+    "sites": { "type": "array", "items": { "$ref": "#/definitions/site" } },
+    "houses": { "type": "array", "items": { "$ref": "#/definitions/house" } },
+    "lots": { "type": "array", "items": { "$ref": "#/definitions/lot" } }
+  },
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "code", "name", "status"],
+      "properties": {
+        "id": { "$ref": "#/definitions/uuid" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "const": "active" }
+      }
+    },
+    "house": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "site_id", "code", "name", "status"],
+      "properties": {
+        "id": { "$ref": "#/definitions/uuid" },
+        "site_id": { "$ref": "#/definitions/uuid" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "const": "active" }
+      }
+    },
+    "lot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "site_id", "house_id", "code", "status"],
+      "properties": {
+        "id": { "$ref": "#/definitions/uuid" },
+        "site_id": { "$ref": "#/definitions/uuid" },
+        "house_id": { "$ref": "#/definitions/uuid" },
+        "code": { "type": "string" },
+        "status": { "const": "active" }
+      }
+    }
+  }
+}

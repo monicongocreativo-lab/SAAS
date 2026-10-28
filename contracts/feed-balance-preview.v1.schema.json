@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-balance-preview:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "company_id",
+    "opening_id",
+    "purpose",
+    "inventory_check",
+    "coverage",
+    "through_at",
+    "status",
+    "reason",
+    "product_id",
+    "location_id",
+    "count_id",
+    "cutoff_at",
+    "opening_bags",
+    "known_receipts_bags",
+    "known_supplied_bags",
+    "diagnostic_balance_bags",
+    "balance_bags",
+    "unmapped_count",
+    "pending_tie_count",
+    "blockers_truncated",
+    "blockers"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-balance-preview"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "opening_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "purpose": {
+      "const": "reconciliation_preview"
+    },
+    "inventory_check": {
+      "const": "not_applied"
+    },
+    "coverage": {
+      "const": "server_records_only"
+    },
+    "through_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["resolved", "blocked", "negative"]
+    },
+    "reason": {
+      "enum": [
+        null,
+        "opening_not_approved",
+        "opening_not_linked",
+        "cutoff_after_through"
+      ]
+    },
+    "product_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "location_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "count_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cutoff_at": {
+      "type": ["string", "null"]
+    },
+    "opening_bags": {
+      "type": ["string", "null"],
+      "maxLength": 256,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "known_receipts_bags": {
+      "type": ["string", "null"],
+      "maxLength": 256,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "known_supplied_bags": {
+      "type": ["string", "null"],
+      "maxLength": 256,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "diagnostic_balance_bags": {
+      "type": ["string", "null"],
+      "maxLength": 256,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "balance_bags": {
+      "type": ["string", "null"],
+      "maxLength": 256,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "unmapped_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pending_tie_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blockers_truncated": {
+      "type": "boolean"
+    },
+    "blockers": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_kind", "source_id", "problem"],
+        "properties": {
+          "source_kind": {
+            "enum": ["supply", "delivery"]
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "problem": {
+            "enum": ["unmapped", "cutoff_tie"]
+          },
+          "previous_decision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

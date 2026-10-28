@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/offline-collection-bundle.v1.schema.json",
+  "title": "Experimental offline collection bundle v1",
+  "description": "A collection event plus a non-authoritative reference to its offline identity grant. The server must resolve and verify the grant before attributing or accepting the event.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "schema_version", "records"],
+  "properties": {
+    "format": { "const": "tamago.offline-collection-bundle" },
+    "schema_version": { "const": 1 },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "identity_binding", "device_proof", "delivery"],
+      "properties": {
+        "event": {
+          "allOf": [
+            {
+              "$ref": "https://tamago.invalid/contracts/collection-event.v2.schema.json"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "actor_declared_id": { "$ref": "#/$defs/uuid" }
+              }
+            }
+          ]
+        },
+        "identity_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["grant_id", "subject_user_id", "attribution_status"],
+          "properties": {
+            "grant_id": { "$ref": "#/$defs/uuid" },
+            "subject_user_id": { "$ref": "#/$defs/uuid" },
+            "attribution_status": { "const": "pending_server_verification" }
+          }
+        },
+        "device_proof": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["format", "schema_version", "jws"],
+          "properties": {
+            "format": { "const": "tamago.offline-device-event-proof" },
+            "schema_version": { "const": 1 },
+            "jws": { "type": "string", "minLength": 1, "maxLength": 8192 }
+          }
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": { "status": { "const": "pending" } }
+        }
+      }
+    }
+  }
+}

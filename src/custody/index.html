@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Custodia · Tamago</title><link rel="stylesheet" href="../admin/admin.css"><link rel="stylesheet" href="custody.css"><script type="module" src="custody.js"></script></head>
+<body><main class="shell">
+  <header class="topbar"><div><p class="eyebrow">OPERACIÓN · EXPERIMENTAL</p><h1>Entrega y custodia de huevos</h1></div><button id="logout" class="quiet" type="button" hidden>Cerrar sesión</button></header>
+  <p class="notice">Solo datos ficticios. Requiere conexión para confirmar. Los formularios de esta pantalla no se conservan al cerrar la pestaña.</p>
+  <p id="message" role="status" aria-live="polite"></p><p id="error" class="error" role="alert" hidden></p>
+  <section id="loginPanel" class="panel" hidden><h2>Acceso personal</h2><form id="loginForm" class="stack"><label>Correo<input name="email" type="email" autocomplete="username" required></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label><button type="submit">Entrar</button></form></section>
+  <section id="passwordPanel" class="panel" hidden><h2>Cambia tu contraseña temporal</h2><form id="passwordForm" class="stack"><label>Nueva contraseña<input name="password" type="password" minlength="12" maxlength="1024" autocomplete="new-password" required></label><label>Repite la contraseña<input name="confirmation" type="password" autocomplete="new-password" required></label><button type="submit">Cambiar contraseña</button></form></section>
+  <section id="workspace" hidden>
+    <section class="panel"><label>Empresa<select id="company"></select></label><p id="identity" class="muted"></p></section>
+    <section id="retryPanel" class="panel" hidden><h2>Confirmación pendiente</h2><p>La respuesta no se confirmó. Conservamos la misma solicitud en esta pestaña; reintentar mantendrá su identidad y contenido.</p><p id="pendingSummary"></p><button id="retry" type="button">Reintentar misma solicitud</button><p class="muted">Mantén esta pestaña abierta. Si la cierras, revisa el expediente antes de registrar otra vez.</p></section>
+    <section id="dispatchPanel" class="panel" hidden aria-labelledby="dispatchTitle">
+      <div class="section-heading"><h2 id="dispatchTitle">Entregar desde galpón</h2><button id="refreshOrigins" class="quiet" type="button">Actualizar orígenes</button></div>
+      <p>Solo se muestran recogidas recibidas por el servidor. Si hay registros pendientes en tu tableta, envíalos primero desde Captura. El disponible es para entrega, no inventario comercial.</p>
+      <label>Fecha de recogida · Colombia<input id="originDate" type="date" required></label>
+      <p id="originsStatus" role="status"></p><ul id="origins" class="cards"></ul><button id="moreOrigins" class="quiet" type="button" hidden>Más orígenes</button>
+      <p id="dispatchOrigin" class="notice"></p>
+      <form id="dispatchForm" class="stack" hidden><h3>Registrar entrega</h3>
+        <label>Huevos enteros a entregar<input name="quantity" type="number" min="1" max="2147483647" step="1" required></label>
+        <label>Lugar de salida<input name="sent_from" maxlength="160" required></label>
+        <label>Destino de entrega<input name="sent_to" maxlength="160" required></label>
+        <p>El origen conserva la fecha de recogida. La hora de esta entrega se registra al confirmar.</p>
+        <button type="submit">Confirmar entrega a Bodega</button>
+      </form>
+    </section>
+    <section id="flowPanel" class="panel" aria-labelledby="flowHeading">
+      <div class="section-heading"><h2 id="flowHeading">Recorrido por origen · solo consulta</h2><button id="refreshFlow" class="quiet" type="button">Actualizar recorrido</button></div>
+      <p>No aprueba ni cierra jornadas. Solo usa información recibida en el servidor; los pendientes locales no se incluyen. Los faltantes y sobrantes de custodia se conservan por separado.</p>
+      <label>Fecha de recogida · Colombia<input id="flowDate" type="date" required></label>
+      <p id="flowStatus" role="status" aria-live="polite"></p><div id="flowItems"></div><button id="moreFlow" class="quiet" type="button" hidden>Más orígenes</button>
+    </section>
+    <div class="custody-layout">
+      <section class="panel"><div class="section-heading"><h2>Traslados</h2><button id="refreshList" class="quiet" type="button">Actualizar lista</button></div><p id="listStatus" role="status"></p><ul id="transfers" class="cards"></ul><button id="moreTransfers" class="quiet" type="button" hidden>Más traslados</button></section>
+      <section id="detail" class="panel" hidden aria-labelledby="originTitle">
+        <div class="section-heading"><h2 id="originTitle" tabindex="-1">Detalle del traslado</h2><button id="refreshDetail" class="quiet" type="button">Actualizar expediente</button></div>
+        <p id="quantities"></p><p id="locations" class="muted"></p><p id="caseStatus" class="notice"></p>
+        <form id="receiptForm" class="stack" hidden><h3>Confirmar descarga</h3><label>Huevos realmente recibidos<input name="quantity" type="number" min="0" max="2147483647" step="1" required></label><label>Ubicación de recepción<input name="location" maxlength="160" required></label><label>Observación<textarea name="note" maxlength="2000" rows="3"></textarea></label><button type="submit">Confirmar recepción</button></form>
+        <section id="casePanel" hidden>
+          <p id="previousSummary" class="muted"></p>
+          <form id="evidenceForm" class="stack" hidden><h3>Agregar antecedente</h3><label>Tipo<select name="kind"><option value="count_record">Recuento</option><option value="origin_card">Tarjeta de origen</option><option value="sender_statement">Antecedente de quien entrega</option><option value="transfer_note">Nota de traslado</option><option value="photo_reference">Referencia a foto</option><option value="other">Otro soporte</option><option value="missing">Soporte faltante</option></select></label><label>Referencia disponible<input name="reference" maxlength="500"></label><label>Detalle o soporte que falta<textarea name="notes" maxlength="2000" rows="3" required></textarea></label><button type="submit">Guardar antecedente</button></form>
+          <form id="submitForm" class="stack" hidden><h3>Presentar a Dirección</h3><label>Resumen de investigación<textarea name="summary" maxlength="4000" rows="3" required></textarea></label><button type="submit">Presentar investigación</button></form>
+          <form id="reviewForm" class="stack" hidden><h3>Revisión de Dirección</h3><label>Decisión de revisión<select name="action"><option value="request_evidence">Solicitar más evidencia</option><option value="continue_investigation">Continuar investigando</option></select></label><label>Motivo<textarea name="reason" maxlength="2000" rows="3" required></textarea></label><button type="submit">Registrar revisión</button></form>
+          <h3>Antecedentes registrados</h3><ul id="evidence" class="timeline"></ul><button id="moreEvidence" class="quiet" type="button" hidden>Más antecedentes</button>
+          <h3>Historial del expediente</h3><ol id="history" class="timeline"></ol><button id="moreHistory" class="quiet" type="button" hidden>Más historial</button>
+          <p class="muted">Una revisión no aplica pérdidas o correcciones ni cierra la conciliación. Las fotos se referencian; esta pantalla no sube archivos.</p>
+        </section>
+      </section>
+    </div>
+  </section>
+  <footer><a href="../feed-intake/">Entradas y apertura de alimento</a> · <a href="../feed-supply/">Suministro de alimento</a> · <a href="../classification/">Clasificación</a> · <a href="../recogidas/">Captura de recogidas</a> · <a href="../admin/">Administración</a></footer>
+</main></body></html>

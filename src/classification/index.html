@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f4f3ef">
+    <title>Clasificación manual · Tamago</title>
+    <link rel="stylesheet" href="./classification.css">
+    <script type="module" src="./classification.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#inicio" aria-label="Tamago, clasificación">
+          <span class="brand-mark brand-mark-image" aria-hidden="true"><img src="./assets/tamago.png" alt=""></span>
+          <span><strong>Tamago</strong><small>OPERACIÓN · CLASIFICACIÓN</small></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="demo-pill"><span aria-hidden="true"></span> Experimental · solo pruebas</span>
+          <span class="user-chip"><span class="avatar" aria-hidden="true">B</span><span><strong id="accountLabel">Sin sesión</strong><small>Permisos verificados en servidor</small></span></span>
+        </div>
+      </header>
+
+      <section class="company-strip" aria-label="Empresas del proyecto">
+        <span class="company-strip-title">Empresas</span>
+        <div class="company-logos">
+          <div class="company-logo-card"><span class="logo-tile tamago-tile"><img src="./assets/tamago.png" alt=""></span><span>Tamago</span></div>
+          <div class="company-logo-card"><span class="logo-tile"><img class="paulina-logo" src="./assets/la-paulina-simbolo.png" alt=""></span><span>La Paulina</span></div>
+          <div class="company-logo-card transagro-card"><span class="logo-tile transagro-tile"><img src="./assets/transagro.png" alt="Transagro"></span></div>
+        </div>
+      </section>
+
+      <main id="inicio" class="page">
+        <p id="message" role="status" aria-live="polite"></p><p id="error" class="notice danger-notice" role="alert" hidden></p>
+        <section id="loginPanel" class="panel access-panel" hidden><h2>Acceso personal</h2><form id="loginForm"><label>Correo<input name="email" type="email" autocomplete="username" required maxlength="320"></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required maxlength="1024"></label><button class="button primary" type="submit">Entrar</button></form></section>
+        <section id="passwordPanel" class="panel access-panel" hidden><h2>Cambia la contraseña temporal</h2><form id="passwordForm"><label>Nueva contraseña<input name="password" type="password" minlength="12" maxlength="1024" autocomplete="new-password" required></label><label>Repite la contraseña<input name="confirmation" type="password" autocomplete="new-password" required></label><button class="button primary" type="submit">Cambiar contraseña</button></form></section>
+        <section id="accountPanel" class="panel account-panel" hidden><label>Empresa autorizada<select id="companySelect"></select></label><button id="refreshAccount" class="button secondary" type="button">Comprobar sesión</button><button id="logout" class="button secondary" type="button">Cerrar sesión</button></section>
+        <div id="workspace" hidden>
+        <section class="intro" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow">ENTRADA MANUAL · HUEVOS RECIBIDOS</p>
+            <h1 id="pageTitle">Clasificación</h1>
+            <p class="intro-copy">Selecciona el origen, indica cuántos huevos vas a procesar y registra los resultados que muestra la clasificadora.</p>
+          </div>
+          <fieldset class="date-pair" aria-label="Fechas de referencia">
+            <label>Fecha de recogida <input id="originDate" type="date" ></label>
+            <span class="date-separator" aria-hidden="true">→</span>
+            <label>Fecha de clasificación <input id="classifiedDate" type="date" ></label>
+          <label>Hora · Colombia<input id="classifiedTime" type="time" required></label></fieldset>
+        </section>
+        <p id="dateOrderNotice" class="date-order-notice" role="alert" hidden>La fecha de clasificación no puede ser anterior a la fecha de recogida.</p>
+
+        <div class="notice demo-notice" role="note">
+          <span class="notice-icon" aria-hidden="true">i</span>
+          <p><strong>Registro experimental conectado · datos ficticios.</strong> El registro requiere conexión. El borrador y los reintentos se conservan solo mientras esta pestaña permanezca abierta y con la misma cuenta y contexto; no hay cola offline. El acuse no aprueba producción ni crea stock comercial.</p>
+        </div>
+
+        <div id="networkNotice" class="notice warning-notice" role="status" hidden>
+          <span class="notice-icon" aria-hidden="true">!</span>
+          <p><strong>Sin conexión.</strong> Esta clasificación no se puede registrar. No existe una cola offline para esta operación.</p>
+        </div>
+        <div id="permissionNotice" class="notice danger-notice" role="alert" hidden>
+          <span class="notice-icon" aria-hidden="true">!</span>
+          <p><strong>Sin permiso para registrar.</strong> La cuenta actual puede consultar, pero el servidor solo permite escribir a Bodega autorizada.</p>
+        </div>
+        <div id="changedNotice" class="notice warning-notice" role="alert" hidden>
+          <span class="notice-icon" aria-hidden="true">!</span>
+          <p><strong>La disponibilidad cambió.</strong> La cantidad disponible ahora es menor que la seleccionada. Actualiza el origen y ajusta la cantidad antes de revisar.</p>
+        </div>
+        <div id="uncertainNotice" class="notice warning-notice" role="alert" hidden>
+          <span class="notice-icon" aria-hidden="true">!</span>
+          <div><p><strong>Confirmación pendiente.</strong> Conservamos la misma solicitud en esta pestaña. Consultaremos su ID antes de reintentar. No cambies de cuenta ni cierres si necesitas recuperar este borrador.</p><button id="retryIntent" class="button secondary small" type="button">Consultar y reintentar misma solicitud</button></div>
+        </div>
+        <p id="liveMessage" class="sr-only" role="status" aria-live="polite"></p>
+
+        <nav class="view-tabs" aria-label="Vistas de clasificación">
+          <button class="view-tab active" type="button" data-view="capture" aria-current="page">Nueva clasificación</button>
+          <button class="view-tab" type="button" data-view="session">Sesiones registradas</button>
+        </nav>
+
+        <section id="captureView" class="workspace" aria-label="Nueva clasificación">
+          <aside class="origin-panel panel" aria-labelledby="originHeading">
+            <div class="panel-heading">
+              <div><p class="eyebrow">PASO 1 · ELEGIR ORIGEN</p><h2 id="originHeading">Entradas recibidas</h2></div>
+              <span id="entryCount" class="count-pill">0 entradas</span>
+            </div>
+            <p class="muted small-copy">Solo aparecen entradas recibidas. Elige un origen; no se mezclan lotes, galpones ni fechas.</p>
+            <button id="refreshInputs" class="button secondary" type="button">Actualizar disponibilidad</button><p id="inputStatus" role="status"></p><button id="moreInputs" class="button secondary" type="button" hidden>Más entradas</button><label>Origen a clasificar<select id="originGroup"></select></label>
+
+            <div class="origin-summary">
+              <div class="origin-company"><span class="company-mark" aria-hidden="true">⌖</span><div><strong id="companyName">—</strong><span id="siteName">—</span></div></div>
+              <dl class="origin-facts">
+                <div><dt>Lote</dt><dd id="lotName">—</dd></div>
+                <div><dt>Galpón</dt><dd id="houseName">—</dd></div>
+                <div><dt>Recogida</dt><dd id="originDateLabel">—</dd></div>
+              </dl>
+            </div>
+
+            <fieldset class="origin-list" id="originList" aria-label="Entradas del mismo origen"></fieldset>
+            <div id="emptyState" class="empty-state" hidden>
+              <span class="empty-icon" aria-hidden="true">○</span><h3>Sin entradas recibidas</h3><p>No hay cantidades disponibles para clasificar en esta fecha.</p>
+            </div>
+            <div id="incidentHint" class="incident-hint" hidden>
+              <span class="incident-dot" aria-hidden="true"></span><p><strong>Incidencia de custodia abierta</strong><br>Se puede clasificar lo realmente recibido. Esta acción no resuelve la diferencia.</p>
+            </div>
+            <p class="panel-footnote">El disponible mostrado puede cambiar. La comprobación definitiva se hace al registrar.</p>
+          </aside>
+
+          <div class="work-column">
+            <section class="panel process-panel" aria-labelledby="processHeading">
+              <div class="panel-heading process-heading">
+                <div><p class="eyebrow">PASO 2 · INDICAR CANTIDAD</p><h2 id="processHeading">¿Cuánto vas a clasificar?</h2></div>
+                <div class="total-highlight"><strong id="selectedTotal">0</strong><span>huevos seleccionados</span></div>
+              </div>
+              <p class="muted small-copy">Puedes procesar una parte y continuar en otra sesión. Cada entrada se descuenta de su cantidad disponible.</p>
+
+              <div class="origin-table-wrap">
+                <table class="origin-table">
+                  <thead><tr><th scope="col">Traslado</th><th scope="col">Recibidos</th><th scope="col">Clasificados</th><th scope="col">Disponibles</th><th scope="col">Procesar ahora</th></tr></thead>
+                  <tbody id="processRows"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel results-panel" aria-labelledby="resultsHeading">
+              <div class="panel-heading results-heading">
+                <div><p class="eyebrow">PASO 3 · DISTRIBUIR RESULTADOS</p><h2 id="resultsHeading">Lo que muestra la clasificadora</h2></div>
+                <button id="addLine" class="button secondary add-line" type="button"><span aria-hidden="true">＋</span> Añadir resultado</button>
+              </div>
+              <p class="muted small-copy">Cada huevo se cuenta una vez. En cada línea elige una tipología, una condición y un destino.</p>
+
+              <fieldset id="lines" class="result-lines" aria-label="Líneas de resultados"></fieldset>
+
+              <div class="balance-card" aria-live="polite">
+                <div class="balance-total"><span>Seleccionados para procesar</span><strong><span id="balanceSelected">0</span> <small>huevos</small></strong></div>
+                <div class="balance-operation" aria-hidden="true"><span>−</span></div>
+                <div class="balance-total"><span>Distribuidos en líneas</span><strong><span id="distributedTotal">0</span> <small>huevos</small></strong></div>
+                <div id="differenceCard" class="balance-difference balanced"><span id="differenceLabel">Diferencia por distribuir</span><strong><span id="differenceTotal">0</span> huevos</strong><small id="balanceHint">Los totales coinciden. Puedes revisar la intención.</small></div>
+              </div>
+
+              <div class="optional-fields">
+                <label class="machine-field">Referencia de configuración de máquina <span class="optional-tag">Opcional · declarada, no verificada</span><input id="machineReference" maxlength="200" placeholder="Ej. línea 2 · turno mañana"></label>
+                <label>Observaciones <span class="optional-tag">Opcional</span><textarea id="notes" rows="2" maxlength="2000" placeholder="Añade un dato útil para la revisión"></textarea><small class="field-hint">Máximo 2.000 caracteres. No se aplican rangos de peso automáticamente.</small></label>
+              </div>
+
+              <div class="action-row">
+                <p id="actionHelp" class="action-help">Para continuar, los totales deben coincidir y ser mayores que cero.</p>
+                <button id="reviewButton" class="button primary" type="button">Revisar clasificación <span aria-hidden="true">→</span></button>
+              </div>
+            </section>
+
+            <section id="reviewPanel" class="panel review-panel" aria-labelledby="reviewHeading" hidden>
+              <div class="panel-heading"><div><p class="eyebrow">PASO 4 · CONFIRMAR INTENCIÓN</p><h2 id="reviewHeading" tabindex="-1">Revisión previa</h2></div><span class="status-chip pending">Por confirmar</span></div>
+              <div id="reviewOrigin" class="review-origin"></div>
+              <div id="reviewLines" class="review-lines"></div>
+              <div class="review-sum"><span>Entradas = resultados</span><strong><span id="reviewTotal">0</span> huevos</strong></div>
+              <div class="notice demo-notice compact"><span class="notice-icon" aria-hidden="true">i</span><p>Al confirmar se registra esta sesión en servidor, con revisión pendiente. Si se pierde la respuesta, conserva esta pestaña para consultar y reintentar el mismo ID.</p></div>
+              <div class="action-row"><button id="editButton" class="button secondary" type="button">Volver a editar</button><button id="confirmButton" class="button primary" type="button">Registrar clasificación en servidor</button></div>
+              <p id="receiptStatus" class="simulated-receipt" role="status" hidden></p>
+            </section>
+          </div>
+        </section>
+
+        <section id="sessionView" class="session-view panel" aria-labelledby="sessionHeading" hidden>
+          <h2 id="sessionHeading" tabindex="-1">Sesiones registradas</h2><p>Consulta por la fecha de recogida elegida. Revisión pendiente no equivale a aprobación.</p>
+          <button id="refreshSessions" class="button secondary" type="button">Actualizar sesiones</button><p id="sessionStatus" role="status"></p><div id="sessionList"></div><button id="moreSessions" class="button secondary" type="button" hidden>Más sesiones</button>
+          <form id="lookupForm" class="lookup-form"><label>Consultar sesión por ID<input name="session_id" required maxlength="36" autocomplete="off"></label><button class="button secondary" type="submit">Consultar ID</button></form><div id="sessionDetail"></div>
+        </section>
+        </div>
+        <footer class="page-footer"><a href="../feed-intake/">Entradas y apertura de alimento</a> · <a href="../feed-supply/">Suministro de alimento</a> · <span>Experimental · no usar para producción</span><a href="../recogidas/">Recogidas</a> · <a href="../custody/">Entrega y custodia</a></footer>
+      </main>
+    </div>
+  </body>
+</html>

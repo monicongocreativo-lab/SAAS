@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#173d32">
+    <title>Prueba de llave física · DEV-007F</title>
+    <link rel="stylesheet" href="./security-key-check.css">
+    <script type="module" src="./security-key-check.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Tamago · DEV-007F · opción futura experimental</p>
+        <h1>Llave física FIDO2</h1>
+        <p>Opción futura: la primera entrega utilizará contraseña personal. Este laboratorio comprueba si el navegador permite registrar una llave física y firmar una prueba local después de perder conexión.</p>
+      </header>
+
+      <aside class="notice" role="note">
+        <strong>Solo laboratorio:</strong> no hay servidor de identidad, empresa, permisos ni aceptación. El reto local no prueba autorización del servidor. No uses llaves ni cuentas de producción.
+      </aside>
+
+      <section aria-labelledby="capabilities-title">
+        <h2 id="capabilities-title">Este navegador</h2>
+        <dl class="checks">
+          <div><dt>Origen seguro</dt><dd id="secure">Comprobando…</dd></div>
+          <div><dt>API WebAuthn</dt><dd id="webauthn">Comprobando…</dd></div>
+          <div><dt>Aplicación preparada sin red</dt><dd id="offline-shell">Comprobando…</dd></div>
+          <div><dt>Red reportada</dt><dd id="network">Comprobando…</dd></div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="registration-title">
+        <h2 id="registration-title">1. Registrar credencial de prueba</h2>
+        <p>Usa solo una llave FIDO2 vacía o de laboratorio. El navegador mostrará su diálogo de seguridad. No se envían datos.</p>
+        <label for="worker-name">Nombre sintético</label>
+        <input id="worker-name" maxlength="40" value="Operario demo">
+        <button id="register" type="button">Registrar llave</button>
+        <p id="credential-state" class="state">Sin credencial local de prueba.</p>
+      </section>
+
+      <section aria-labelledby="proof-title">
+        <h2 id="proof-title">2. Firmar una prueba de captura</h2>
+        <label for="event-text">Contenido ficticio de la prueba</label>
+        <textarea id="event-text" rows="3">DEV-007F · recogida ficticia · 300 huevos</textarea>
+        <button id="sign" type="button" disabled>Presentar y tocar la llave</button>
+        <p id="proof-state" class="state" role="status" aria-live="polite">Registra una credencial para habilitar la prueba.</p>
+        <details>
+          <summary>Ver paquete local de demostración</summary>
+          <pre id="proof-output">Todavía no hay paquete.</pre>
+        </details>
+      </section>
+
+      <section class="cleanup" aria-labelledby="cleanup-title">
+        <h2 id="cleanup-title">Borrar laboratorio</h2>
+        <p>Esto borra únicamente el identificador local de esta prueba. No borra una credencial residente de la llave; para eso se requiere el procedimiento del fabricante.</p>
+        <button id="clear" type="button" class="secondary">Borrar datos locales de prueba</button>
+      </section>
+
+      <footer>
+        <p>Sin sincronización ni validación de identidad. La verificación del servidor, aislamiento de colas por persona, pérdida/reposición de llave y ensayos físicos siguen pendientes.</p>
+      </footer>
+    </main>
+  </body>
+</html>

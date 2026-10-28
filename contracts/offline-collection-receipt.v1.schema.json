@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/offline-collection-receipt.v1.schema.json",
+  "title": "Experimental authenticated offline collection receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "company_id",
+    "synchronization_user_id",
+    "capture_subject_id",
+    "grant_id",
+    "format",
+    "schema_version",
+    "record_digest",
+    "receipt_status",
+    "review_status",
+    "received_at",
+    "duplicate",
+    "identity_status",
+    "registry_status"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "synchronization_user_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "capture_subject_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "grant_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "format": {
+      "const": "tamago.offline-collection-receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "receipt_status": {
+      "const": "received"
+    },
+    "review_status": {
+      "enum": ["pending", "review_required"]
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duplicate": {
+      "type": "boolean"
+    },
+    "identity_status": {
+      "enum": ["verified", "invalid", "unresolved"]
+    },
+    "registry_status": {
+      "enum": [
+        "registry_current_unverified",
+        "not_found",
+        "scope_mismatch",
+        "revoked",
+        "expired",
+        "not_yet_valid",
+        "authorization_no_longer_current"
+      ]
+    },
+    "proof_status": {
+      "enum": ["verified", "invalid", "unresolved"]
+    },
+    "quarantine_reason": {
+      "enum": [
+        "proof_scope_mismatch",
+        "proof_invalid",
+        "grant_missing",
+        "grant_revoked",
+        "grant_expired",
+        "grant_not_yet_valid",
+        "authorization_no_longer_current",
+        "receiver_capture_forbidden",
+        "collection_occurrence_conflict",
+        "collection_event_conflict"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review_status": {
+            "const": "review_required"
+          }
+        }
+      },
+      "then": {
+        "required": ["proof_status", "quarantine_reason"]
+      },
+      "else": {
+        "properties": {
+          "identity_status": {
+            "const": "verified"
+          },
+          "registry_status": {
+            "const": "registry_current_unverified"
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": ["proof_status"]
+            },
+            {
+              "required": ["quarantine_reason"]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

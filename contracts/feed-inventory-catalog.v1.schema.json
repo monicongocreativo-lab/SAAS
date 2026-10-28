@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-inventory-catalog:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "item_id",
+    "company_id",
+    "site_id",
+    "house_id",
+    "lot_id",
+    "kind",
+    "code",
+    "label",
+    "unit",
+    "reason"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-catalog-item"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "item_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "house_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "lot_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "kind": {
+      "enum": ["product", "location"]
+    },
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "unit": {
+      "enum": ["BAG_40KG", null]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "product"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "BAG_40KG"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "unit": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/device-registration-proof.v1.schema.json",
+  "title": "Tamago offline device registration proof v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["jws"],
+  "properties": {
+    "jws": { "type": "string", "minLength": 1, "maxLength": 4096 }
+  }
+}

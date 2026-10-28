@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/offline-identity-grant.v1.schema.json",
+  "title": "Experimental offline identity grant claims v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "iss",
+    "aud",
+    "sub",
+    "jti",
+    "iat",
+    "nbf",
+    "exp",
+    "schema_version",
+    "company_id",
+    "device_id",
+    "site_id",
+    "house_id",
+    "lot_id",
+    "permission"
+  ],
+  "properties": {
+    "iss": { "const": "https://tamago.invalid/offline-grants" },
+    "aud": { "const": "tamago.offline.capture" },
+    "sub": { "$ref": "#/$defs/uuid" },
+    "jti": { "$ref": "#/$defs/uuid" },
+    "iat": { "type": "integer", "minimum": 0 },
+    "nbf": { "type": "integer", "minimum": 0 },
+    "exp": { "type": "integer", "minimum": 1 },
+    "schema_version": { "const": 1 },
+    "company_id": { "$ref": "#/$defs/uuid" },
+    "device_id": { "$ref": "#/$defs/uuid" },
+    "site_id": { "$ref": "#/$defs/uuid" },
+    "house_id": { "$ref": "#/$defs/uuid" },
+    "lot_id": { "$ref": "#/$defs/uuid" },
+    "permission": { "const": "collection.capture" }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    }
+  }
+}

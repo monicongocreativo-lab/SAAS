@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:tamago:experimental:collection-ingestion-result:1",
+  "title": "DEV-003 synthetic collection ingestion result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "schema_version", "environment", "results"],
+  "properties": {
+    "format": { "const": "tamago.collection-ingestion-result" },
+    "schema_version": { "const": 1 },
+    "environment": { "const": "synthetic" },
+    "results": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/result" }
+    }
+  },
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "syntheticId": { "type": "string", "pattern": "^SYN-[A-Za-z0-9_-]{1,64}$" },
+    "instant": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "result": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["event_id", "status", "receipt"],
+          "properties": {
+            "event_id": { "$ref": "#/definitions/uuid" },
+            "status": { "const": "received" },
+            "receipt": { "$ref": "#/definitions/receipt" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["event_id", "status", "code"],
+          "properties": {
+            "event_id": { "$ref": "#/definitions/uuid" },
+            "status": { "const": "rejected" },
+            "code": {
+              "enum": [
+                "OUT_OF_SCOPE",
+                "EVENT_ID_CONFLICT",
+                "OCCURRENCE_CONFLICT"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "company_id",
+        "receipt_id",
+        "server_received_at",
+        "content_sha256",
+        "result_revision"
+      ],
+      "properties": {
+        "event_id": { "$ref": "#/definitions/uuid" },
+        "company_id": { "$ref": "#/definitions/syntheticId" },
+        "receipt_id": { "$ref": "#/definitions/uuid" },
+        "server_received_at": { "$ref": "#/definitions/instant" },
+        "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "result_revision": { "const": 1 }
+      }
+    }
+  }
+}

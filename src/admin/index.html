@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d32">
+  <title>Administración experimental · Tamago</title>
+  <link rel="stylesheet" href="./admin.css">
+  <script type="module" src="./admin.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div><p class="eyebrow">TAMAGO · LABORATORIO DEV-004</p><h1>Administración de accesos</h1></div>
+      <button id="logout" class="quiet" type="button" hidden>Cerrar sesión</button>
+    </header>
+    <p class="notice" role="note">Prototipo local experimental. El administrador puede crear una identidad ficticia, asignarle una membresía y entregar una contraseña temporal fuera del SaaS. No envía correos ni habilita el primer director.</p>
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <section id="loginPanel" class="panel">
+      <h2>Iniciar sesión</h2>
+      <form id="loginForm" class="stack">
+        <label>Correo<input name="email" type="email" autocomplete="username" required></label>
+        <label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="passwordChangePanel" class="panel" hidden>
+      <h2>Cambia tu contraseña temporal</h2>
+      <p>Antes de continuar, define una contraseña personal de al menos 12 caracteres.</p>
+      <form id="passwordChangeForm" class="stack">
+        <label>Nueva contraseña<input name="new_password" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label>Repite la contraseña<input name="confirm_password" type="password" autocomplete="new-password" minlength="12" required></label>
+        <button type="submit">Cambiar contraseña</button>
+      </form>
+    </section>
+
+    <section id="credentialPanel" class="panel" hidden>
+      <h2>Acceso inicial creado</h2>
+      <p>Entrega esta clave a la persona por el canal externo acordado. Solo se muestra aquí hasta que confirmes la entrega.</p>
+      <label>Contraseña temporal<input id="temporaryPassword" type="text" readonly autocomplete="off"></label>
+      <div class="actions">
+        <button id="recoverCredential" class="quiet" type="button" hidden>Recuperar contraseña pendiente</button>
+        <button id="copyTemporaryPassword" type="button">Copiar contraseña</button>
+        <button id="acknowledgeCredential" class="quiet" type="button">Ya la entregué; borrar</button>
+      </div>
+      <p class="muted">La persona deberá cambiarla al iniciar sesión. No compartas una captura de esta pantalla.</p>
+    </section>
+
+    <section id="deliveryRecoveryPanel" class="panel" hidden>
+      <div class="section-heading">
+        <div><h2>Entregas pendientes</h2><p>Recupera una clave temporal no confirmada, incluso después de cerrar el navegador.</p></div>
+        <button id="refreshPendingDeliveries" class="quiet" type="button">Buscar pendientes</button>
+      </div>
+      <ul id="pendingDeliveries" class="pending-deliveries"></ul>
+    </section>
+
+    <section id="adminPanel" hidden>
+      <div class="panel identity-row">
+        <div><span class="label">Sesión verificada</span><code id="userId"></code></div>
+        <label>Empresa<select id="companySelect" disabled><option>Cargando empresas…</option></select></label>
+      </div>
+      <section class="panel">
+        <div class="section-heading"><div><h2>Membresías</h2><p>Roles de empresa y estado de cada acceso.</p></div><button id="refresh" class="quiet" type="button">Actualizar</button></div>
+        <p id="membershipSummary" class="muted">Selecciona una empresa autorizada.</p>
+        <div class="table-wrap"><table><thead><tr><th>Identidad Auth (UUID)</th><th>Estado</th><th>Roles</th><th>Acciones</th></tr></thead><tbody id="members"></tbody></table></div>
+      </section>
+      <section class="panel">
+        <h2>Crear identidad y acceso inicial</h2>
+        <p>El servidor crea la cuenta en Auth, la vincula a esta empresa y genera una clave temporal. Dirección aprueba roles administrativos; este formulario excluye el rol director.</p>
+        <form id="createIdentityForm" class="invite-form">
+          <label>Correo<input name="email" type="email" autocomplete="off" required></label>
+          <label>Rol inicial<select name="role_key" required></select></label>
+          <button type="submit">Crear identidad</button>
+        </form>
+      </section>
+      <details class="panel">
+        <summary>Vincular identidad Auth existente por UUID</summary>
+        <p>Usa esto solo cuando la persona ya tiene una cuenta creada en Auth.</p>
+        <form id="inviteForm" class="invite-form">
+          <label>UUID de la cuenta Auth<input name="user_id" inputmode="text" autocomplete="off" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" required pattern="[0-9a-fA-F-]{36}"></label>
+          <label>Rol inicial<select name="role_key" required></select></label>
+          <button type="submit">Crear invitación de membresía</button>
+        </form>
+      </details>
+      <footer>Los cambios pasan por el gateway local y la política de autorización del servidor. Esta pantalla no concede permisos por sí sola.</footer>
+    </section>
+  </main>
+</body>
+</html>

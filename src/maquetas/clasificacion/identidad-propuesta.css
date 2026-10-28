@@ -1,0 +1,68 @@
+:root { color-scheme: light dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: light-dark(#23302a, #e9eee9); background: light-dark(#f4f3ef, #111714); --panel: light-dark(#fff, #1b231f); --line: light-dark(#dfe5df, #39443e); --muted: light-dark(#67746d, #a8b5ac); --yellow-tamago: #f2ae00; --blue-tamago: #2f6f9e; --yellow-paulina: #f2b43c; --orange-paulina: #e85b35; --yellow-transagro: #d8a91e; --green-transagro: #4f7b4c; }
+* { box-sizing: border-box; }
+body { margin: 0; color: inherit; background: light-dark(#f4f3ef, #111714); }
+.board { width: min(1080px, calc(100% - 40px)); margin: 0 auto; padding: 36px 0 42px; }
+.board-heading { margin-bottom: 28px; }
+.board-heading > a { color: light-dark(#365f4a, #b5d7be); font-size: 13px; text-decoration: none; }
+.eyebrow { margin: 23px 0 8px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .15em; }
+h1, h2, p { margin-top: 0; }
+h1 { max-width: 760px; margin-bottom: 8px; font-size: clamp(27px, 5vw, 42px); letter-spacing: -.045em; line-height: 1.08; }
+.lede { max-width: 650px; color: var(--muted); font-size: 15px; line-height: 1.55; }
+.palette-grid, .context-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.brand-panel, .origin-card { min-width: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.brand-panel { padding: 18px; border-top: 3px solid var(--brand); }
+.tamago { --brand: var(--blue-tamago); --brand-secondary: var(--yellow-tamago); }
+.paulina { --brand: var(--orange-paulina); --brand-secondary: var(--yellow-paulina); }
+.transagro { --brand: var(--green-transagro); --brand-secondary: var(--yellow-transagro); }
+.lockup, .company, .origin-brand, .app-brand { display: flex; align-items: center; gap: 11px; }
+.lockup { min-height: 47px; }
+.lockup strong { font-size: 20px; letter-spacing: -.035em; }
+.symbol { flex: 0 0 auto; width: 39px; height: 39px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.symbol img { display: block; width: 29px; height: 29px; object-fit: contain; }
+.tamago-symbol { position: relative; display: block; flex: 0 0 39px; width: 39px; height: 39px; overflow: hidden; }
+.tamago-symbol { position: relative; border-color: #d5e3ec; background: #fff; }
+.tamago-symbol img { position: absolute; left: -16.4px; top: -23.5px; width: 69px; height: auto; max-width: none; object-fit: initial; }
+.app-brand .tamago-symbol img { left: -20.4px; top: -28.8px; width: 86px; }
+.company .tamago-symbol img { left: -13.8px; top: -19.7px; width: 58px; }
+.paulina-symbol img { width: 20px; height: 33px; }
+.transagro-symbol img { width: 30px; height: 30px; }
+.brand-panel h2 { margin: 18px 0 11px; font-size: 13px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 9px 15px; }
+.swatches > span { display: grid; grid-template-columns: 15px auto; align-items: center; gap: 2px 7px; color: var(--muted); font-size: 10px; }
+.swatches i { width: 15px; height: 15px; grid-row: span 2; border: 1px solid rgb(0 0 0 / 10%); border-radius: 5px; background: var(--brand-secondary); }
+.swatches > span:last-child i { background: var(--brand); }
+code { color: light-dark(#35433b, #e9eee9); font-size: 10px; }
+.concept { min-height: 34px; margin: 13px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.preview-section { margin-top: 35px; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 15px; margin-bottom: 12px; }
+.section-heading .eyebrow { margin: 0 0 5px; }
+.section-heading h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+.mode-label { color: var(--muted); font-size: 10px; white-space: nowrap; }
+.mock-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; min-height: 75px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 13px 13px 0 0; background: var(--panel); }
+.app-brand .tamago-symbol { flex-basis: 37px; width: 37px; height: 37px; }
+.app-brand strong, .app-brand small { display: block; }
+.app-brand strong { font-size: 16px; }
+.app-brand small { margin-top: 3px; color: var(--muted); font-size: 8px; letter-spacing: .12em; }
+.header-task { padding: 8px 10px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 10px; }
+.company-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 18px; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 13px 13px; background: light-dark(#fafaf8, #161d19); }
+.company { min-height: 43px; padding: 3px 11px 3px 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-size: 12px; }
+.company .symbol { width: 34px; height: 34px; border-color: transparent; }
+.company .paulina-symbol img { width: 18px; height: 30px; }
+.company .transagro-symbol img { width: 28px; height: 28px; }
+.company strong { font-weight: 700; }
+.origin-card { padding: 14px; border-left: 3px solid var(--brand); }
+.origin-card > p { margin: 0 0 10px; color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: .09em; }
+.origin-brand .symbol { width: 37px; height: 37px; border-color: #e5e8e3; background: #fff; }
+.origin-brand .tamago-symbol img { left: -16.4px; top: -23.5px; width: 69px; }
+.origin-brand .paulina-symbol img { width: 18px; height: 30px; }
+.origin-brand .transagro-symbol img { width: 27px; height: 27px; }
+.origin-brand strong, .origin-brand small { display: block; }
+.origin-brand strong { font-size: 13px; }
+.origin-brand small { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.origin-card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 13px 0 0; padding-top: 11px; border-top: 1px solid var(--line); }
+.origin-card dl div { min-width: 0; }
+.origin-card dt { color: var(--muted); font-size: 9px; }
+.origin-card dd { margin: 3px 0 0; font-size: 11px; font-weight: 700; }
+.note { margin: 11px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+footer { margin-top: 28px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+@media (max-width: 700px) { .board { width: min(100% - 28px, 500px); padding-top: 20px; } .palette-grid, .context-grid { grid-template-columns: 1fr; gap: 9px; } .brand-panel { padding: 14px; } .brand-panel h2 { margin: 10px 0 8px; } .concept { min-height: 0; margin-top: 8px; } .preview-section { margin-top: 27px; } .section-heading { align-items: start; flex-direction: column; gap: 5px; } .mock-header { min-height: 66px; padding: 10px; } .company-row { padding: 9px; gap: 7px; } .company { min-height: 39px; gap: 6px; padding-right: 8px; font-size: 10px; } .company .symbol { width: 30px; height: 30px; } .company .tamago-symbol img { left: -13.8px; top: -19.7px; width: 58px; } .app-brand .tamago-symbol img { left: -17.7px; top: -25px; width: 74px; } }

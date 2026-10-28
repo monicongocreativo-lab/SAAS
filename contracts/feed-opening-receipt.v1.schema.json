@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-opening-receipt:v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schema_version",
+        "event",
+        "actor_id",
+        "recorded_at",
+        "revision",
+        "state_at_recording",
+        "inventory_check",
+        "duplicate"
+      ],
+      "properties": {
+        "format": {
+          "const": "tamago.feed-opening-count-receipt"
+        },
+        "schema_version": {
+          "const": 1
+        },
+        "event": {
+          "$ref": "urn:tamago:feed-opening-count:v1"
+        },
+        "actor_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "recorded_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000001
+        },
+        "state_at_recording": {
+          "const": "pending"
+        },
+        "inventory_check": {
+          "const": "not_applied"
+        },
+        "duplicate": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schema_version",
+        "event",
+        "actor_id",
+        "recorded_at",
+        "revision",
+        "state_at_recording",
+        "inventory_check",
+        "duplicate"
+      ],
+      "properties": {
+        "format": {
+          "const": "tamago.feed-opening-approval-receipt"
+        },
+        "schema_version": {
+          "const": 1
+        },
+        "event": {
+          "$ref": "urn:tamago:feed-opening-approval:v1"
+        },
+        "actor_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "recorded_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000001
+        },
+        "state_at_recording": {
+          "const": "approved"
+        },
+        "inventory_check": {
+          "const": "not_applied"
+        },
+        "duplicate": {
+          "type": "boolean"
+        }
+      }
+    }
+  ]
+}

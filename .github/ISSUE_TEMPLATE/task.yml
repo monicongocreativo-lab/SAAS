@@ -1,0 +1,50 @@
+name: Tarea de desarrollo
+description: Corrección, mejora, función o trabajo técnico con resultado verificable.
+title: "[TAREA] "
+body:
+  - type: markdown
+    attributes:
+      value: "Lee CONTRIBUTING.md. Usa datos ficticios o redactados; no incluyas secretos ni soportes de operación."
+  - type: dropdown
+    id: category
+    attributes:
+      label: Tipo de tarea
+      options:
+        - Corrección
+        - Mejora
+        - Nueva función
+        - Trabajo técnico
+        - Documentación
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Problema y resultado esperado
+      description: "Quién realiza la acción, qué ocurre hoy y qué debe ocurrir después."
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance y dependencias
+      description: "Incluye fuente de la regla, componentes afectados, límites y decisiones pendientes."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: "Casos observables con resultado esperado y forma de comprobarlo."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia y reproducción
+      description: "Entorno, pasos, esperado/observado y datos ficticios. Si aún no se probó, indícalo."
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Riesgos y recuperación
+      description: "Persistencia, permisos, offline, dependencias y ruta de reversión cuando corresponda."

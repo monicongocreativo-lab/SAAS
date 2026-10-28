@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-ledger-entries:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "company_id",
+    "account_id",
+    "revision",
+    "book_balance_bags",
+    "items",
+    "next_offset"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-ledger-entries"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "account_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "book_balance_bags": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "company_id",
+          "account_id",
+          "action_id",
+          "source_kind",
+          "source_id",
+          "delta",
+          "desired_after",
+          "context_hash",
+          "source_snapshot",
+          "operation_revision",
+          "recorded_by",
+          "recorded_at",
+          "operation_payload"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "company_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "account_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "action_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "source_kind": {
+            "enum": ["opening", "delivery", "supply"]
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "delta": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "desired_after": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "context_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_snapshot": {
+            "type": "object"
+          },
+          "operation_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "recorded_by": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "recorded_at": {
+            "type": "string",
+            "minLength": 20
+          },
+          "operation_payload": {
+            "oneOf": [
+              {
+                "$ref": "urn:tamago:feed-ledger-activation:v1"
+              },
+              {
+                "$ref": "urn:tamago:feed-ledger-posting:v1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 25
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

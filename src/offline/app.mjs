@@ -1,4 +1,6 @@
+import { assertOperationalCatalog } from "./catalog-contract.mjs";
 import { createRecord, operationalDate, pack } from "./contract.mjs";
+import { mountPasswordIdentity } from "./password-identity-ui.mjs";
 import {
   installationId,
   openStore,
@@ -12,6 +14,412 @@ let db;
 let deviceId;
 let busy = false;
 let attempt = null;
+let authenticatedCompanyList = [];
+let operationalCatalog = null;
+let authRequestBusy = false;
+let authenticatedUserId = null;
+let authEpoch = 0;
+let identityUi;
+function lockLocalIdentity() {
+  identityUi?.lock();
+}
+function selectedIdentityScope() {
+  if (
+    !authenticatedUserId ||
+    !operationalCatalog ||
+    !lotSelect.value ||
+    !operationalCatalog.lots.some(
+      (lot) =>
+        lot.id === lotSelect.value &&
+        lot.site_id === siteSelect.value &&
+        lot.house_id === houseSelect.value,
+    )
+  )
+    return null;
+  return {
+    company_id: companySelect.value,
+    site_id: siteSelect.value,
+    house_id: houseSelect.value,
+    lot_id: lotSelect.value,
+  };
+}
+
+const authLoginForm = $("#loginForm");
+const passwordChangeForm = $("#passwordChangeForm");
+const catalogPanel = $("#catalogPanel");
+const companySelect = $("#catalogCompany");
+const siteSelect = $("#catalogSite");
+const houseSelect = $("#catalogHouse");
+const lotSelect = $("#catalogLot");
+
+async function authenticatedRequest(path, options = {}) {
+  const response = await fetch(path, {
+    ...options,
+    credentials: "same-origin",
+    signal: AbortSignal.timeout(15_000),
+    headers: {
+      ...(options.body ? { "content-type": "application/json" } : {}),
+      ...options.headers,
+    },
+  });
+  const body =
+    response.status === 204 ? null : await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(body?.error ?? `HTTP_${response.status}`);
+  return body;
+}
+
+function setAuthError(message = "") {
+  $("#authError").textContent = message;
+  $("#authError").hidden = !message;
+}
+
+function resetCatalog(message = "") {
+  authenticatedCompanyList = [];
+  operationalCatalog = null;
+  catalogPanel.hidden = true;
+  $("#accountIdentity").textContent = "";
+  $("#catalogStatus").textContent = message;
+  $("#retryCatalog").hidden = true;
+  replaceOptions(companySelect, [], "No hay empresas disponibles");
+  replaceOptions(siteSelect, [], "Elige empresa primero");
+  replaceOptions(houseSelect, [], "Elige sede primero");
+  replaceOptions(lotSelect, [], "Elige galpón primero");
+}
+
+function replaceOptions(
+  select,
+  items,
+  emptyLabel,
+  label = (item) => item.name,
+) {
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = items.length ? "Selecciona…" : emptyLabel;
+  select.replaceChildren(placeholder);
+  for (const item of items) {
+    const option = document.createElement("option");
+    option.value = item.id;
+    option.textContent = label(item);
+    select.append(option);
+  }
+  select.disabled = items.length === 0 || authRequestBusy;
+}
+
+function showPasswordChange() {
+  authLoginForm.hidden = true;
+  passwordChangeForm.hidden = false;
+  catalogPanel.hidden = true;
+  $("#authStatus").textContent =
+    "La cuenta requiere cambiar su contraseña temporal.";
+}
+
+async function showAuthenticatedContext(userId) {
+  lockLocalIdentity();
+  authenticatedUserId = userId;
+  authLoginForm.hidden = true;
+  passwordChangeForm.hidden = true;
+  catalogPanel.hidden = false;
+  $("#authStatus").textContent = "Sesión verificada por el servidor.";
+  setAuthError();
+  await loadCompanies();
+  if (authenticatedUserId !== userId) return;
+  $("#accountIdentity").textContent =
+    `Sesión autenticada · usuario ${userId}. Puedes preparar el ámbito seleccionado. El área legado de datos sintéticos sigue separada.`;
+  await identityUi?.refresh();
+}
+
+async function loadCompanies() {
+  const epoch = authEpoch;
+  $("#catalogStatus").textContent = "Cargando empresas permitidas…";
+  $("#retryCatalog").hidden = true;
+  resetCatalog();
+  catalogPanel.hidden = false;
+  try {
+    const values = await authenticatedRequest("/v1/companies");
+    if (epoch !== authEpoch) return;
+    if (
+      !Array.isArray(values) ||
+      values.some(
+        (item) =>
+          !item ||
+          !isUuid(item.id) ||
+          typeof item.code !== "string" ||
+          typeof item.legal_name !== "string",
+      )
+    )
+      throw new Error("INVALID_COMPANY_DIRECTORY");
+    authenticatedCompanyList = values;
+    replaceOptions(
+      companySelect,
+      values,
+      "No tienes empresas activas asignadas",
+      (company) => `${company.legal_name} · ${company.code}`,
+    );
+    $("#catalogStatus").textContent = values.length
+      ? "Elige una empresa para consultar sus ubicaciones autorizadas."
+      : "Esta identidad no tiene empresas activas asignadas.";
+  } catch (error) {
+    if (epoch !== authEpoch) return;
+    $("#catalogStatus").textContent =
+      "No se pudo cargar el directorio de empresas.";
+    $("#retryCatalog").hidden = false;
+    setAuthError(authErrorMessage(error.message));
+  }
+}
+
+async function loadOperationalCatalog(companyId) {
+  const epoch = authEpoch;
+  operationalCatalog = null;
+  replaceOptions(siteSelect, [], "Cargando sedes…");
+  replaceOptions(houseSelect, [], "Elige sede primero");
+  replaceOptions(lotSelect, [], "Elige galpón primero");
+  $("#catalogStatus").textContent = "Consultando ubicaciones autorizadas…";
+  $("#retryCatalog").hidden = true;
+  try {
+    const catalog = await authenticatedRequest(
+      `/v1/companies/${encodeURIComponent(companyId)}/operational-catalog`,
+    );
+    if (epoch !== authEpoch || companyId !== companySelect.value) return;
+    operationalCatalog = assertOperationalCatalog(catalog, companyId);
+    replaceOptions(siteSelect, operationalCatalog.sites, "Sin sedes activas");
+    $("#catalogStatus").textContent =
+      `Catálogo del servidor: ${operationalCatalog.sites.length} sede(s), ${operationalCatalog.houses.length} galpón(es), ${operationalCatalog.lots.length} lote(s) visibles. Elige cada nivel para consultar el siguiente.`;
+  } catch (error) {
+    if (epoch !== authEpoch || companyId !== companySelect.value) return;
+    operationalCatalog = null;
+    replaceOptions(siteSelect, [], "No fue posible cargar las sedes");
+    $("#catalogStatus").textContent = "El catálogo no quedó disponible.";
+    $("#retryCatalog").hidden = false;
+    setAuthError(authErrorMessage(error.message));
+  }
+}
+
+function authErrorMessage(code) {
+  const known = {
+    AUTHENTICATION_REQUIRED: "La sesión venció. Inicia sesión de nuevo.",
+    PASSWORD_CHANGE_REQUIRED: "Cambia la contraseña temporal para continuar.",
+    INVALID_CREDENTIALS: "Correo o contraseña incorrectos.",
+    INVALID_COMPANY_DIRECTORY:
+      "El servidor devolvió un directorio con formato inválido.",
+    INVALID_OPERATIONAL_CATALOG:
+      "El catálogo no coincide con su contrato. No se usará.",
+    COMPANY_NOT_FOUND: "La empresa ya no está disponible para esta sesión.",
+  }[code];
+  if (known) return known;
+  const suffix =
+    typeof code === "string" ? ` (código ${code.slice(0, 80)})` : "";
+  return `No se pudo contactar al servicio local. Comprueba la conexión e inténtalo de nuevo.${suffix}`;
+}
+
+function isUuid(value) {
+  return (
+    typeof value === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      value,
+    )
+  );
+}
+
+async function refreshAuthenticatedContext() {
+  const epoch = ++authEpoch;
+  try {
+    const session = await authenticatedRequest("/v1/auth/me");
+    if (epoch !== authEpoch) return;
+    if (!isUuid(session.user_id)) throw new Error("INVALID_SESSION_RESPONSE");
+    if (session.password_change_required) {
+      authenticatedUserId = null;
+      lockLocalIdentity();
+      resetCatalog();
+      showPasswordChange();
+      return;
+    }
+    await showAuthenticatedContext(session.user_id);
+  } catch (error) {
+    if (epoch !== authEpoch) return;
+    authenticatedUserId = null;
+    lockLocalIdentity();
+    resetCatalog();
+    passwordChangeForm.hidden = true;
+    authLoginForm.hidden = false;
+    if (error.message === "AUTHENTICATION_REQUIRED") {
+      $("#authStatus").textContent =
+        "Inicia sesión para consultar el catálogo autorizado.";
+      setAuthError();
+    } else {
+      $("#authStatus").textContent =
+        "No se pudo verificar la sesión en el servidor.";
+      setAuthError(authErrorMessage(error.message));
+    }
+  }
+}
+
+function setAuthBusy(value) {
+  authRequestBusy = value;
+  for (const button of [
+    ...authLoginForm.querySelectorAll("button"),
+    ...passwordChangeForm.querySelectorAll("button"),
+    $("#retryCatalog"),
+    $("#refreshSession"),
+    $("#logout"),
+  ])
+    button.disabled = value;
+  companySelect.disabled = value || authenticatedCompanyList.length === 0;
+  siteSelect.disabled = value || !operationalCatalog?.sites.length;
+  houseSelect.disabled =
+    value || !houseSelect.options.length || houseSelect.options.length < 2;
+  lotSelect.disabled =
+    value || !lotSelect.options.length || lotSelect.options.length < 2;
+}
+
+authLoginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (authRequestBusy || !authLoginForm.reportValidity()) return;
+  authenticatedUserId = null;
+  authEpoch += 1;
+  lockLocalIdentity();
+  setAuthError();
+  setAuthBusy(true);
+  const formData = new FormData(authLoginForm);
+  try {
+    await authenticatedRequest("/v1/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+    });
+    authLoginForm.querySelector('[name="password"]').value = "";
+    await refreshAuthenticatedContext();
+  } catch (error) {
+    authLoginForm.querySelector('[name="password"]').value = "";
+    setAuthError(authErrorMessage(error.message));
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+passwordChangeForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (authRequestBusy || !passwordChangeForm.reportValidity()) return;
+  const newPassword = passwordChangeForm.querySelector(
+    '[name="new_password"]',
+  ).value;
+  const confirmation = passwordChangeForm.querySelector(
+    '[name="confirm_password"]',
+  ).value;
+  if (newPassword !== confirmation) {
+    setAuthError("Las contraseñas no coinciden.");
+    return;
+  }
+  setAuthError();
+  setAuthBusy(true);
+  try {
+    await authenticatedRequest("/v1/auth/change-initial-password", {
+      method: "POST",
+      body: JSON.stringify({ new_password: newPassword }),
+    });
+    passwordChangeForm.reset();
+    await refreshAuthenticatedContext();
+  } catch (error) {
+    passwordChangeForm.reset();
+    setAuthError(authErrorMessage(error.message));
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+companySelect.addEventListener("change", () => {
+  lockLocalIdentity();
+  setAuthError();
+  if (companySelect.value) void loadOperationalCatalog(companySelect.value);
+  else resetCatalog("Elige una empresa.");
+});
+
+siteSelect.addEventListener("change", () => {
+  lockLocalIdentity();
+  const siteId = siteSelect.value;
+  const houses =
+    operationalCatalog?.houses.filter((house) => house.site_id === siteId) ??
+    [];
+  replaceOptions(houseSelect, houses, "Sin galpones activos");
+  replaceOptions(lotSelect, [], "Elige galpón primero");
+  $("#catalogStatus").textContent = houses.length
+    ? `${houses.length} galpón(es) autorizados en esta sede.`
+    : "No hay galpones activos autorizados en esta sede.";
+});
+
+houseSelect.addEventListener("change", () => {
+  lockLocalIdentity();
+  const siteId = siteSelect.value;
+  const houseId = houseSelect.value;
+  const lots =
+    operationalCatalog?.lots.filter(
+      (lot) => lot.site_id === siteId && lot.house_id === houseId,
+    ) ?? [];
+  replaceOptions(lotSelect, lots, "Sin lotes activos");
+  $("#catalogStatus").textContent = lots.length
+    ? `${lots.length} lote(s) autorizado(s) en este galpón.`
+    : "No hay lotes activos autorizados en este galpón.";
+});
+
+$("#refreshSession").addEventListener("click", async () => {
+  if (authRequestBusy) return;
+  setAuthBusy(true);
+  try {
+    await refreshAuthenticatedContext();
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+$("#retryCatalog").addEventListener("click", () => {
+  setAuthError();
+  void refreshAuthenticatedContext();
+});
+
+$("#logout").addEventListener("click", async () => {
+  if (authRequestBusy) return;
+  authenticatedUserId = null;
+  authEpoch += 1;
+  lockLocalIdentity();
+  setAuthError();
+  setAuthBusy(true);
+  try {
+    await authenticatedRequest("/v1/auth/logout", { method: "POST" });
+    resetCatalog();
+    passwordChangeForm.hidden = true;
+    authLoginForm.hidden = false;
+    authLoginForm.reset();
+    $("#authStatus").textContent = "Sesión cerrada en el servidor.";
+  } catch (error) {
+    setAuthError(authErrorMessage(error.message));
+  } finally {
+    resetCatalog();
+    passwordChangeForm.hidden = true;
+    authLoginForm.hidden = false;
+    await identityUi?.refresh();
+    setAuthBusy(false);
+  }
+});
+
+lotSelect.addEventListener("change", () => {
+  lockLocalIdentity();
+  void identityUi?.refresh();
+});
+void mountPasswordIdentity({
+  request: authenticatedRequest,
+  authenticatedUser: () => authenticatedUserId,
+  selectedScope: selectedIdentityScope,
+})
+  .then((ui) => {
+    identityUi = ui;
+    return ui.refresh();
+  })
+  .catch((error) => {
+    $("#identityError").textContent =
+      `No se pudo preparar el acceso local: ${error.message}`;
+    $("#identityError").hidden = false;
+  });
 
 function report(error) {
   $("#error").textContent =
@@ -24,7 +432,7 @@ function clearMessages() {
 }
 function network() {
   $("#connection").textContent = navigator.onLine
-    ? "Conexión disponible según el dispositivo; no hay servidor de sincronización."
+    ? "Conexión disponible según el dispositivo; las recogidas sintéticas todavía no se sincronizan."
     : "Sin conexión. Puedes guardar localmente; todo permanece pendiente.";
 }
 function setBusy(value) {
@@ -196,6 +604,8 @@ form.elements.time.value = new Intl.DateTimeFormat("en-GB", {
   minute: "2-digit",
   hourCycle: "h23",
 }).format(new Date());
+setAuthBusy(true);
+void refreshAuthenticatedContext().finally(() => setAuthBusy(false));
 network();
 addEventListener("online", network);
 addEventListener("offline", network);

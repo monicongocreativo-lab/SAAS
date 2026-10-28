@@ -1,0 +1,39 @@
+nav {
+  margin: 22px 0;
+}
+nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px;
+}
+#casePanel p,
+#casePanel li,
+#intentSummary,
+#receiptStatus,
+#deliveryDetail {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+#intentSummary {
+  font-weight: 600;
+  line-height: 1.6;
+}
+#countHistory {
+  padding-left: 22px;
+}
+#countHistory li {
+  border-bottom: 1px solid #d8e1da;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+form h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+h3 {
+  margin-top: 0;
+}
+#scopeFields {
+  max-width: 760px;
+}

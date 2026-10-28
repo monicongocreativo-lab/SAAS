@@ -10,18 +10,29 @@
   "scripts": {
     "build": "node scripts/build-offline.mjs",
     "start": "node scripts/serve.mjs",
+    "start:sync": "node scripts/sync-prototype-server.mjs",
+    "auth:start-local": "node scripts/start-auth-prototype.mjs",
     "test": "pnpm build && node --test tests/*.test.mjs",
+    "test:sync": "pnpm build && node --test tests/sync-prototype.test.mjs",
+    "test:auth-local": "node --test tests/supabase/*.test.mjs",
     "test:browser": "pnpm build && node --test tests/browser/*.test.mjs",
-    "lint": "biome check src/offline scripts tests/offline-contract.test.mjs tests/browser/offline.test.mjs tests/fixtures/offline-harness.mjs contracts package.json biome.json",
-    "check": "pnpm build && pnpm lint && pnpm test && pnpm test:browser"
+    "lint": "biome check src/offline src/sync-prototype src/auth-prototype src/admin src/experimental/device-key-check src/experimental/security-key-check scripts tests/offline-contract.test.mjs tests/offline-identity-grant.test.mjs tests/offline-identity-envelope.test.mjs tests/offline-device-proof.test.mjs tests/offline-grant-issuer.test.mjs tests/device-registration-proof.test.mjs tests/offline-grant-route.test.mjs tests/collection-contract.test.mjs tests/catalog-contract.test.mjs tests/sync-prototype.test.mjs tests/supabase tests/browser/offline.test.mjs tests/browser/device-key-check.test.mjs tests/browser/security-key-check.test.mjs tests/browser/webauthn-verifier.test.mjs tests/webauthn-verifier.test.mjs tests/password-key-vault.test.mjs tests/password-confirm-route.test.mjs tests/browser/password-identity-ui.test.mjs tests/browser/protected-queue.test.mjs tests/fixtures/protected-queue-harness.mjs tests/fixtures/password-identity-server.mjs tests/browser/password-key-vault.test.mjs tests/browser/admin.test.mjs tests/browser/context.test.mjs tests/browser/mockup.test.mjs tests/fixtures/offline-harness.mjs contracts package.json biome.json tests/collection-receipt.test.mjs tests/browser/protected-sync.test.mjs tests/custody-command-contract.test.mjs src/custody tests/browser/custody.test.mjs tests/fixtures/custody-real-server.mjs tests/custody-api.test.mjs tests/transfer-contract.test.mjs tests/browser/dispatch.test.mjs tests/manual-classification.test.mjs tests/shared-session-store.test.mjs tests/fixtures/shared-session-probe.mjs tests/browser/field-layout.test.mjs src/classification tests/browser/classification.test.mjs src/shared tests/origin-flow.test.mjs tests/browser/origin-flow.test.mjs tests/feed-supply.test.mjs src/feed-supply tests/browser/feed-supply.test.mjs tests/feed-delivery.test.mjs tests/feed-opening.test.mjs src/feed-intake tests/browser/feed-intake.test.mjs tests/feed-inventory.test.mjs src/feed-inventory tests/browser/feed-inventory.test.mjs tests/feed-inventory-revision.test.mjs tests/browser/feed-corrections.test.mjs tests/feed-ledger.test.mjs tests/browser/feed-ledger.test.mjs tests/browser/demo-local.test.mjs",
+    "check": "pnpm build && pnpm lint && pnpm test && pnpm test:browser",
+    "test:classification-local": "node scripts/check-classification-api.mjs",
+    "test:feed-book-upgrade-local": "node --test tests/supabase/feed-book-upgrade.test.mjs",
+    "test:feed-upgrade-local": "node --test tests/supabase/feed-upgrade.test.mjs",
+    "demo:start": "pnpm build && node scripts/demo-local.mjs"
   },
   "dependencies": {
-    "idb": "8.0.4"
+    "@simplewebauthn/server": "14.0.3",
+    "idb": "8.0.4",
+    "jose": "6.2.13"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.2",
     "ajv": "8.20.0",
     "esbuild": "0.28.2",
-    "playwright": "1.62.1"
+    "playwright": "1.62.1",
+    "supabase": "2.119.0"
   }
 }

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f7f4">
+    <title>Flujo de recogidas · Maqueta operativa</title>
+    <link rel="stylesheet" href="./recogidas.css">
+    <script type="module" src="./recogidas.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="#identificar" aria-label="Flujo de recogidas, inicio">
+          <span class="brand-mark"><img id="companyLogo" src="./assets/la-paulina.svg" alt=""></span>
+          <span><strong id="companyName">La Paulina</strong><small>Registro de campo</small></span>
+        </a>
+        <div class="topbar-actions">
+          <label class="company-switch"><span>Empresa</span>
+            <select id="companySelect" aria-label="Empresa de ejemplo">
+              <option value="paulina">La Paulina</option>
+              <option value="tamago">Tamago</option>
+              <option value="transagro">Transagro</option>
+            </select>
+          </label>
+          <button id="networkToggle" class="network-pill" type="button" aria-pressed="false">
+            <span class="network-dot" aria-hidden="true"></span><span id="networkLabel">Con conexión</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <div class="page-heading">
+          <div><p class="eyebrow">MAQUETA INTERACTIVA · DATOS DE EJEMPLO</p><h1>Flujo de recogidas</h1></div>
+          <div class="date-badge"><span class="calendar-icon" aria-hidden="true">▦</span><span><small>Fecha operativa</small><strong id="todayLabel">25 oct 2026</strong></span></div>
+        </div>
+
+        <nav class="stepper" aria-label="Pasos del flujo">
+          <button class="step active" data-go="identificar" type="button" aria-current="step"><span>1</span><span><strong>Identificar</strong><small>Quién registra</small></span></button>
+          <span class="step-line" aria-hidden="true"></span>
+          <button class="step" data-go="registrar" type="button"><span>2</span><span><strong>Registrar</strong><small>Datos de recogida</small></span></button>
+          <span class="step-line" aria-hidden="true"></span>
+          <button class="step" data-go="estado" type="button"><span>3</span><span><strong>Estado</strong><small>Guardado y envío</small></span></button>
+        </nav>
+
+        <aside class="prototype-note" role="note">
+          <span class="note-icon" aria-hidden="true">✳</span>
+          <p><strong>Vista de diseño</strong><span>Las acciones muestran el recorrido; todavía no guardan ni sincronizan datos reales. <a href="../../experimental/recogidas/">Abrir Recogidas conectada</a>.</span></p>
+        </aside>
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+
+        <section class="screen" id="screen-identificar" aria-labelledby="identifyTitle">
+          <div class="screen-copy">
+            <p class="eyebrow">PASO 1 DE 3</p>
+            <h2 id="identifyTitle">¿Quién registra hoy?</h2>
+            <p>Elige tu nombre para dejarlo visible en esta maqueta. La verificación de identidad sin conexión sigue pendiente.</p>
+            <div class="identity-pending"><span aria-hidden="true">!</span><div><strong>Tableta compartida</strong><p>Método de desbloqueo offline por definir. Elegir un nombre aquí no inicia sesión ni acredita autoría.</p></div></div>
+          </div>
+          <div class="screen-content">
+            <div class="section-title"><div><h3>Personal de campo</h3><p>Selecciona tu nombre</p></div><span class="count-label">3 disponibles</span></div>
+            <div class="person-list" role="radiogroup" aria-label="Personal de ejemplo">
+              <button class="person selected" type="button" role="radio" aria-checked="true" data-person="Ana Rodríguez" data-role="Galponera"><span class="avatar">AR</span><span class="person-text"><strong>Ana Rodríguez</strong><small>Galponera · Galpón 3</small></span><span class="person-check" aria-hidden="true">✓</span></button>
+              <button class="person" type="button" role="radio" aria-checked="false" data-person="Luis Méndez" data-role="Bodega"><span class="avatar avatar-gold">LM</span><span class="person-text"><strong>Luis Méndez</strong><small>Bodega · Recepción</small></span><span class="person-check" aria-hidden="true">✓</span></button>
+              <button class="person" type="button" role="radio" aria-checked="false" data-person="María Torres" data-role="Galponera"><span class="avatar avatar-green">MT</span><span class="person-text"><strong>María Torres</strong><small>Galponera · Galpón 1</small></span><span class="person-check" aria-hidden="true">✓</span></button>
+            </div>
+            <div class="assigned-context"><span class="context-icon" aria-hidden="true">⌖</span><div><small>Contexto asignado · ejemplo</small><strong id="assignedContext">Finca El Recuerdo · Lote LP-08</strong></div><button type="button" class="text-button" id="changeContext">Cambiar</button></div>
+            <p class="microcopy">La maqueta no consulta los permisos de una cuenta real.</p>
+            <button class="primary next-button" data-next="registrar" type="button">Continuar <span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+
+        <section class="screen" id="screen-registrar" aria-labelledby="captureTitle" hidden>
+          <div class="screen-copy">
+            <p class="eyebrow">PASO 2 DE 3</p>
+            <h2 id="captureTitle">Registrar recogida</h2>
+            <p>El contexto y la fecha vienen primero. Solo ingresa el número de huevos de esta recogida.</p>
+            <div class="capture-context">
+              <div><small>Registrando como</small><strong id="activePerson">Ana Rodríguez</strong></div>
+              <div><small>Lote · Galpón</small><strong id="activeLot">LP-08 · Galpón 3</strong></div>
+              <div><small>Fecha operativa</small><strong id="captureDate">25/10/2026</strong></div>
+            </div>
+            <div class="offline-callout" id="offlineCallout" hidden><span aria-hidden="true">⌁</span><div><strong>Sin conexión</strong><p>En el sistema final, la recogida quedaría provisional en esta tableta hasta recuperar la señal.</p></div></div>
+          </div>
+          <form class="screen-content capture-form" id="captureForm">
+            <div class="section-title"><div><h3>Recogida del día</h3><p>Registra solo las que ocurrieron</p></div><span class="unit-chip">Huevos enteros</span></div>
+            <fieldset class="turn-field"><legend>¿Cuál recogida estás registrando?</legend><div class="turn-options">
+              <label class="turn-option"><input type="radio" name="turn" value="1" checked><span><small>Recogida</small><strong>1</strong></span><b aria-hidden="true">✓</b></label>
+              <label class="turn-option"><input type="radio" name="turn" value="2"><span><small>Recogida</small><strong>2</strong></span><b aria-hidden="true">✓</b></label>
+              <label class="turn-option"><input type="radio" name="turn" value="3"><span><small>Recogida</small><strong>3</strong></span><b aria-hidden="true">✓</b></label>
+            </div></fieldset>
+            <label class="quantity-label" for="quantity">Cantidad recogida <span>en huevos</span></label>
+            <div class="quantity-input"><input id="quantity" name="quantity" type="number" min="0" step="1" inputmode="numeric" placeholder="0" required><span>huevos</span></div>
+            <p class="field-hint">Puedes registrar una, dos o tres recogidas. No hace falta completar las que no ocurrieron.</p>
+            <button class="primary save-button" type="submit">Guardar en esta tableta <span aria-hidden="true">→</span></button>
+            <button class="back-link" data-go="identificar" type="button">← Volver a identificación</button>
+          </form>
+        </section>
+
+        <section class="screen" id="screen-estado" aria-labelledby="statusTitle" hidden>
+          <div class="screen-copy">
+            <p class="eyebrow">PASO 3 DE 3</p>
+            <h2 id="statusTitle">Tus registros</h2>
+            <p>Consulta qué se guardó en la tableta y qué recibió confirmación del servidor.</p>
+            <div class="queue-summary"><span class="queue-number" id="pendingCount">1</span><div><strong>Pendiente de envío</strong><small>Guardado de ejemplo en esta tableta</small></div></div>
+            <button class="secondary export-button" id="exportButton" type="button"><span aria-hidden="true">↓</span> Exportar respaldo</button>
+            <p class="microcopy">Exportar crea una copia; no envía ni aprueba una recogida.</p>
+          </div>
+          <div class="screen-content">
+            <div class="section-title"><div><h3>Registros recientes</h3><p>Estado de cada recogida</p></div><button class="text-button" data-go="registrar" type="button">+ Nueva</button></div>
+            <div class="record-list" id="recordList">
+              <article class="record record-pending"><div class="record-top"><strong>Hoy · 10:24</strong><span class="status-tag"><i></i>Pendiente de envío</span></div><p><b>LP-08</b> · Galpón 3 · Recogida 1</p><div class="record-bottom"><strong>320 <small>huevos</small></strong><span>Guardado en esta tableta</span></div></article>
+              <article class="record record-received"><div class="record-top"><strong>Ayer · 11:18</strong><span class="status-tag"><i></i>Revisión pendiente</span></div><p><b>LP-08</b> · Galpón 3 · Recogida 2</p><div class="record-bottom"><strong>450 <small>huevos</small></strong><span>Recibido por servidor</span></div></article>
+              <article class="record record-conflict"><div class="record-top"><strong>23 oct · 10:02</strong><span class="status-tag"><i></i>Requiere revisión</span></div><p><b>LP-08</b> · Galpón 3 · Recogida 1</p><div class="record-bottom"><strong>280 <small>huevos</small></strong><span>Conservado en la tableta</span></div><div class="record-message">El acceso usado para enviar ya no está vigente. El registro se conserva.</div></article>
+            </div>
+            <div class="legend"><span><i class="legend-blue"></i>En el dispositivo</span><span><i class="legend-green"></i>Recibido</span><span><i class="legend-red"></i>Revisar</span></div>
+          </div>
+        </section>
+
+        <footer class="page-footer"><span>Uso diario · captura breve · estados claros</span><span>Prototipo local · no usar para producción</span></footer>
+      </main>
+    </div>
+  </body>
+</html>

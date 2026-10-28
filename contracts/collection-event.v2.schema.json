@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/collection-event.v2.schema.json",
+  "title": "Authenticated collection event v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "company_id",
+    "site_id",
+    "house_id",
+    "lot_id",
+    "business_date",
+    "occurrence",
+    "quantity_eggs",
+    "occurred_at",
+    "captured_at",
+    "actor_declared_id",
+    "device_id"
+  ],
+  "properties": {
+    "schema_version": { "const": 2 },
+    "event_id": { "$ref": "#/$defs/uuid" },
+    "company_id": { "$ref": "#/$defs/uuid" },
+    "site_id": { "$ref": "#/$defs/uuid" },
+    "house_id": { "$ref": "#/$defs/uuid" },
+    "lot_id": { "$ref": "#/$defs/uuid" },
+    "business_date": { "type": "string", "format": "date" },
+    "occurrence": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "quantity_eggs": { "type": "integer", "minimum": 0 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "actor_declared_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "device_id": { "$ref": "#/$defs/uuid" }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    }
+  }
+}

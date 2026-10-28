@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#173d32">
+    <title>Prueba local de clave · DEV-007</title>
+    <link rel="stylesheet" href="./device-key-check.css">
+    <script type="module" src="./device-key-check.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Tamago · DEV-007 · experimento local</p>
+        <h1>Prueba de clave en este dispositivo</h1>
+        <p>Evalúa WebCrypto, IndexedDB y recuperación sin conexión. Usa solo perfiles de prueba; no escribe eventos de producción ni se conecta al servidor.</p>
+      </header>
+
+      <aside class="notice" role="note">
+        <strong>Límite de seguridad:</strong> esta página no autentica trabajadores ni aísla perfiles. El código de este mismo sitio puede usar las dos claves de prueba. Una clave no exportable en el navegador no demuestra protección de hardware.
+      </aside>
+
+      <section aria-labelledby="capabilities-title">
+        <h2 id="capabilities-title">Capacidades del navegador</h2>
+        <dl class="checks">
+          <div><dt>Origen seguro (HTTPS/localhost)</dt><dd id="secure">Comprobando…</dd></div>
+          <div><dt>WebCrypto</dt><dd id="webcrypto">Comprobando…</dd></div>
+          <div><dt>IndexedDB</dt><dd id="indexeddb">Comprobando…</dd></div>
+          <div><dt>Aplicación preparada sin red</dt><dd id="offline-shell">Comprobando…</dd></div>
+          <div><dt>Red reportada</dt><dd id="network">Comprobando…</dd></div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="profiles-title">
+        <h2 id="profiles-title">Dos perfiles ficticios</h2>
+        <p class="hint">Crea A y B mientras hay red. Luego cambia a modo avión, vuelve a abrir la página y firma con ambos para comprobar si IndexedDB conserva las claves.</p>
+        <div class="profiles">
+          <article class="profile" data-profile="a">
+            <h3>Trabajador de prueba A</h3>
+            <p id="profile-a-state">Sin clave de prueba</p>
+            <button id="create-a" type="button">Crear clave A</button>
+            <button id="sign-a" type="button" disabled>Firmar con A</button>
+          </article>
+          <article class="profile" data-profile="b">
+            <h3>Trabajador de prueba B</h3>
+            <p id="profile-b-state">Sin clave de prueba</p>
+            <button id="create-b" type="button">Crear clave B</button>
+            <button id="sign-b" type="button" disabled>Firmar con B</button>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="result-title">
+        <h2 id="result-title">Resultado observado</h2>
+        <p id="result" role="status" aria-live="polite">La página no envía información. Las claves de prueba permanecen en este navegador.</p>
+        <ol id="history" aria-label="Resultados de las pruebas"></ol>
+      </section>
+
+      <section class="cleanup" aria-labelledby="cleanup-title">
+        <h2 id="cleanup-title">Datos de esta prueba</h2>
+        <p>Solo se almacenan las dos claves en la base IndexedDB <code>tamago-dev007-key-check-v1</code>. No se lee ni borra el almacenamiento de recogidas DEV-002.</p>
+        <button id="delete-test-data" type="button" class="secondary">Borrar solo las claves de esta prueba</button>
+      </section>
+
+      <footer>
+        <p>Sin sesión, empresa, lote, datos reales, grant ni sincronización. «Firmado» significa que WebCrypto verificó una prueba local; no significa identidad autenticada.</p>
+      </footer>
+    </main>
+  </body>
+</html>

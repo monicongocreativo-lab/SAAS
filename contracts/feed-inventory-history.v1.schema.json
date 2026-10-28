@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-inventory-history:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "company_id",
+    "target_kind",
+    "target_id",
+    "current_revision",
+    "original",
+    "items",
+    "next_offset",
+    "inventory_check"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-inventory-history"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "target_kind": {
+      "enum": ["binding", "cutoff"]
+    },
+    "target_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "current_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "original": {
+      "type": "object",
+      "required": ["event_payload", "company_id", "recorded_by", "recorded_at"],
+      "properties": {
+        "event_payload": {
+          "type": "object"
+        },
+        "company_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "recorded_by": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "recorded_at": {
+          "type": "string"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "required": [
+          "revision_id",
+          "company_id",
+          "target_kind",
+          "target_id",
+          "version",
+          "previous_revision_id",
+          "event_payload",
+          "recorded_by",
+          "recorded_at"
+        ],
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "company_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "target_kind": {
+            "enum": ["binding", "cutoff"]
+          },
+          "target_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "previous_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "event_payload": {
+            "$ref": "urn:tamago:feed-inventory-correction:v1"
+          },
+          "recorded_by": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "recorded_at": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 25
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "inventory_check": {
+      "const": "not_applied"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-ledger-receipt:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "event",
+    "actor_id",
+    "recorded_at",
+    "account_id",
+    "revision",
+    "balance_bags",
+    "duplicate",
+    "inventory_check",
+    "coverage"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-ledger-receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "event": {
+      "oneOf": [
+        {
+          "$ref": "urn:tamago:feed-ledger-activation:v1"
+        },
+        {
+          "$ref": "urn:tamago:feed-ledger-posting:v1"
+        }
+      ]
+    },
+    "actor_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 20
+    },
+    "account_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "balance_bags": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+    },
+    "duplicate": {
+      "type": "boolean"
+    },
+    "inventory_check": {
+      "const": "applied_to_book"
+    },
+    "coverage": {
+      "const": "server_records_only"
+    }
+  }
+}

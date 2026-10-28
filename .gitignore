@@ -7,3 +7,16 @@ node_modules/
 .generated/
 test-results/
 artifacts/*.bundle
+supabase/.temp/
+supabase/.branches/
+dist/demo/
+*.sqlite
+*.sqlite-*
+*.pem
+*.key
+*.p12
+*.cer
+*.mobileconfig
+dist/experimental/
+dist/maquetas/
+evidence/

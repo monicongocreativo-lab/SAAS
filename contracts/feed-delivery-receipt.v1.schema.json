@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-delivery-receipt:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "event",
+    "recorded_by",
+    "recorded_at",
+    "inventory_check",
+    "duplicate"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-delivery-receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "event": {
+      "$ref": "urn:tamago:feed-delivery:v1"
+    },
+    "recorded_by": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inventory_check": {
+      "const": "not_evaluated"
+    },
+    "duplicate": {
+      "type": "boolean"
+    }
+  }
+}

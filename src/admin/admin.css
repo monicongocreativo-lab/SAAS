@@ -1,0 +1,266 @@
+:root {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1c2924;
+  background: #f2f5f2;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+.shell {
+  width: min(1100px, 100% - 32px);
+  margin: 32px auto;
+}
+.topbar,
+.section-heading,
+.identity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.topbar {
+  margin-bottom: 20px;
+}
+.eyebrow,
+.label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #44685a;
+}
+.eyebrow {
+  margin: 0 0 7px;
+}
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: clamp(1.65rem, 4vw, 2.3rem);
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.panel {
+  background: white;
+  border: 1px solid #d8e1da;
+  border-radius: 14px;
+  padding: 22px;
+  margin: 16px 0;
+  box-shadow: 0 3px 12px #20392a0a;
+}
+.notice {
+  padding: 12px 15px;
+  background: #eaf2ed;
+  border-left: 4px solid #477660;
+  border-radius: 6px;
+  line-height: 1.5;
+}
+.message,
+.error {
+  min-height: 1.4em;
+}
+.error {
+  color: #9e2525;
+}
+.muted,
+footer,
+.panel p {
+  color: #5b6c62;
+  line-height: 1.5;
+}
+.stack {
+  display: grid;
+  gap: 15px;
+  max-width: 480px;
+}
+.invite-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  align-items: end;
+  gap: 12px;
+}
+label {
+  display: grid;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+input,
+select,
+button {
+  font: inherit;
+}
+input,
+select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #9eafa3;
+  border-radius: 8px;
+  padding: 9px 11px;
+  background: white;
+  color: inherit;
+}
+button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: #215b43;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:hover {
+  background: #174631;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #99c3aa;
+  outline-offset: 2px;
+}
+.quiet {
+  background: #eaf1ec;
+  color: #234333;
+}
+.quiet:hover {
+  background: #dce9df;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+th,
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e0e7e2;
+  vertical-align: top;
+}
+th {
+  font-size: 0.82rem;
+  color: #496154;
+}
+td code {
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.role-chip,
+.status-chip {
+  display: inline-block;
+  border-radius: 99px;
+  padding: 4px 9px;
+  background: #edf3ee;
+  font-size: 0.8rem;
+}
+.status-chip {
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.actions button {
+  min-height: 34px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+.danger {
+  background: #a53e35;
+}
+.danger:hover {
+  background: #812e27;
+}
+footer {
+  font-size: 0.85rem;
+  margin: 22px 0;
+}
+@media (max-width: 720px) {
+  .shell {
+    width: calc(100% - 22px);
+    margin: 15px auto;
+  }
+  .panel {
+    padding: 16px;
+  }
+  .topbar,
+  .section-heading,
+  .identity-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .invite-form {
+    grid-template-columns: 1fr;
+  }
+  .invite-form button {
+    width: 100%;
+  }
+  .table-wrap table {
+    min-width: 0;
+  }
+  .table-wrap thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap td {
+    display: block;
+  }
+  .table-wrap tr {
+    padding: 9px 0;
+    border-bottom: 1px solid #d8e1da;
+  }
+  .table-wrap td {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px 0;
+    border: 0;
+  }
+  .table-wrap td::before {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #496154;
+  }
+  .table-wrap td:nth-child(1)::before {
+    content: "Identidad";
+  }
+  .table-wrap td:nth-child(2)::before {
+    content: "Estado";
+  }
+  .table-wrap td:nth-child(3)::before {
+    content: "Roles";
+  }
+  .table-wrap td:nth-child(4)::before {
+    content: "Acciones";
+  }
+  .table-wrap td code {
+    overflow-wrap: anywhere;
+  }
+}

@@ -1,0 +1,21 @@
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+#preview button {
+  display: block;
+  max-width: 100%;
+  margin: 12px 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#catalog li,
+#source,
+#opening,
+#receipt {
+  overflow-wrap: anywhere;
+}
+select {
+  max-width: 100%;
+}

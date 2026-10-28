@@ -1,0 +1,91 @@
+@import url("./classification-base.css");
+
+/* The approved mockup owns the base design; only connected-flow additions live here. */
+:where(fieldset) {
+  border: 0;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+.access-panel {
+  max-width: 640px;
+  margin: 24px 0;
+  padding: 24px;
+}
+.access-panel form {
+  display: grid;
+  gap: 18px;
+}
+.access-panel label,
+.account-panel label,
+#originGroup {
+  display: grid;
+  gap: 8px;
+}
+.access-panel input,
+#companySelect,
+#originGroup,
+.lookup-form input {
+  padding: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  width: 100%;
+  min-width: 0;
+}
+.account-panel {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  padding: 20px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.account-panel label {
+  flex: 1;
+  min-width: 180px;
+}
+.lookup-form {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0;
+}
+#sessionList {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+#sessionDetail,
+#sessionList,
+#message,
+#error {
+  overflow-wrap: anywhere;
+}
+#sessionDetail table {
+  width: 100%;
+}
+#message {
+  line-height: 1.6;
+}
+#inputStatus {
+  line-height: 1.6;
+}
+.date-pair {
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .date-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .date-pair label:last-child {
+    grid-column: 1 / -1;
+  }
+  .date-pair input {
+    min-width: 0;
+  }
+  .date-separator {
+    display: none;
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "mode": "manual_machine_output",
+  "automatic_weight_classification": false,
+  "machine_configuration_verification": "not_implemented",
+  "typologies": [
+    {
+      "code": "PIPO",
+      "label": "PIPO"
+    },
+    {
+      "code": "C",
+      "label": "C"
+    },
+    {
+      "code": "B",
+      "label": "B"
+    },
+    {
+      "code": "A",
+      "label": "A"
+    },
+    {
+      "code": "AA",
+      "label": "AA"
+    },
+    {
+      "code": "AAA",
+      "label": "Extra (AAA)"
+    },
+    {
+      "code": "YUMBO",
+      "label": "Yumbo"
+    },
+    {
+      "code": "UNKNOWN",
+      "label": "No determinada"
+    }
+  ],
+  "conditions": [
+    {
+      "code": "NORMAL",
+      "label": "Limpio"
+    },
+    {
+      "code": "DIRTY",
+      "label": "Sucio"
+    },
+    {
+      "code": "BROKEN",
+      "label": "Roto"
+    },
+    {
+      "code": "YOLK",
+      "label": "Yema"
+    }
+  ],
+  "destinations": [
+    {
+      "code": "PENDING",
+      "label": "No definido"
+    },
+    {
+      "code": "DISCARD",
+      "label": "Descarte"
+    }
+  ]
+}

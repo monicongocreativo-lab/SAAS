@@ -1,43 +1,46 @@
-# Centro de Control Empresarial — prototipo UX
+# SaaS operativo · checkpoint técnico demostrable
 
-Prototipo local para alinear diseño, finanzas e ingeniería antes de construir el MVP operativo.
+Código experimental para los flujos de Tamago, La Paulina y Transagro. Esta rama conserva una versión revisable del desarrollo local; **no es una aplicación desplegada ni una aprobación para producción**.
 
-## Empezar: prueba con un lote nuevo
+La demostración preparada cubre alimento: conteo aprobado, primera apertura explícita, suministro, vínculo de producto/ubicación, aplicación al libro, insuficiencia, compensaciones y conflicto entre pestañas. Todo usa identidades y datos ficticios con Auth/Postgres locales. Las interfaces de recogidas, custodia y clasificación también están incluidas en el código; no todas están preconfiguradas en el caso de demostración.
 
-La entrada principal es el cuaderno operativo del lote nuevo. El ejemplo ficticio está separado de la prueba local. Incluye registros diarios, balances, correcciones y cierre validado. No hay servidor, autenticación ni sincronización entre trabajadores.
+## Ejecutar localmente
 
-```sh
-python3 -m http.server 8765 --bind 127.0.0.1 --directory dist
-```
-
-Abrir http://127.0.0.1:8765. No abrir directamente con `file://`.
-
-Guía y límites: [BOCETO_PRUEBA_CAMPO.md](BOCETO_PRUEBA_CAMPO.md). La visión multiempresa anterior se conserva en `dist/vision.html`; sus cifras son demostrativas y no funcionalidades conectadas.
-
-Pruebas del motor (Node.js):
+Requiere Node/pnpm de `.node-version`/`package.json` y Docker en ejecución. Primera instalación y descarga de imágenes necesitan internet.
 
 ```sh
-node --test tests/pilot-model.test.mjs
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm demo:start
 ```
 
-## Visión de producto representada (no toda implementada)
+Abre **la URL que imprime la terminal**, terminada en `/demo/`, en ese mismo ordenador. Allí encontrarás cuentas ficticias por rol, botones para copiar y el ID de apertura. **Ctrl+C** cierra la sesión de demostración y retira sus fixtures. La base usa un proyecto Docker exclusivo y conserva sus volúmenes; no borra bases de otros proyectos.
 
-- Panorama individual y consolidado de La Paulina, Tamago y Transagro.
-- Flujo diario de recogida, clasificación, conciliación y cierre.
-- Comparador experimental de alimento con entradas editables.
-- Matching y eliminación de operaciones interempresa.
-- Lanzador de registros operativos por empresa.
-- Handoff UX–desarrollo con eventos, estados y definición de terminado.
-- Matriz DOFA, crítica del alcance y plan de validación por etapas.
-- Biblioteca de prompts para observación, historias, eventos, ecuaciones, experimentos y puertas.
+[Guion de demostración y recuperación](docs/DEMO.md) · [Estado y evidencia](docs/ESTADO_TECNICO.md) · [Guía de revisión del código](docs/REVISION.md)
 
-Los valores son datos de demostración. No sustituyen registros contables, productivos ni evidencia experimental.
+## Qué significa cada estado
 
-## Documentos de trabajo
+- Guardado local y pendiente de envío pertenecen a la captura offline de recogidas, que tiene su propio contrato.
+- Recibido por servidor conserva un hecho; no lo aprueba ni lo aplica automáticamente al inventario.
+- El libro de alimento solo cambia con una acción explícita y autorizada de Dirección.
+- Un resultado revisable negativo bloquea aplicación y conserva la captura original.
+- Alimento, custodia y clasificación de este checkpoint requieren conexión. No atribuirles la cola offline de recogidas.
 
-- `OBJETIVOS_Y_PREPARACION_PRODUCCION.md`: objetivos medibles, evidencia actual, responsabilidades y puertas para desarrollo, piloto y uso operativo (revisión 2026-10-18).
-- `ESTRATEGIA_PRODUCTO_ETAPAS_0_1.md`: diagnóstico, DOFA, hoja de ruta, trabajo de UX, backlog y prompts.
-- `REGISTRO_DECISIONES_Y_VALIDACION.md`: acuerdos, preguntas bloqueantes y resultados de pruebas.
-- `HANDOFF_UX_UI_ELKIN.md`: corte vertical y contrato mínimo para ingeniería.
+## Verificar
 
-La versión actual es local. Publicar o desplegar requiere una instrucción explícita del propietario.
+```sh
+pnpm test
+pnpm lint
+TAMAGO_BROWSER_CHANNEL=chrome pnpm test:browser
+```
+
+Las pruebas de integración con Postgres requieren **opt-in y entorno local ficticio**. Sin ellos se omiten expresamente; un resultado omitido no acredita ese recorrido. Ver comandos completos y resultados reales en [estado técnico](docs/ESTADO_TECNICO.md).
+
+## Evidencia visual
+
+Captura de navegador automatizado con datos ficticios; no representa un despliegue ni una captura del iPhone físico:
+
+![Libro de alimento y asientos conservados](docs/images/libro-desktop.png)
+
+La validación física en iPhone fue comunicada por el usuario y contrastada con registros del servidor local. Sus límites están documentados.
+
+Esta entrega depende del [PR #2 de DEV-002](https://github.com/monicongocreativo-lab/SAAS/pull/2); el nuevo PR es borrador y no integra a `main`. GitHub Pages continúa mostrando su versión anterior. No se añade workflow de despliegue.

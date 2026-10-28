@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tamago:feed-ledger-review:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "company_id",
+    "opening_id",
+    "through_at",
+    "account",
+    "revision",
+    "book_through_at",
+    "anchor",
+    "book_balance_bags",
+    "proposed_balance_bags",
+    "available_bags",
+    "status",
+    "can_activate",
+    "can_post",
+    "can_manage",
+    "coverage",
+    "inventory_check",
+    "preview",
+    "source_count",
+    "pending_sources",
+    "other_applied_sources",
+    "review_token",
+    "items",
+    "next_offset"
+  ],
+  "properties": {
+    "format": {
+      "const": "tamago.feed-ledger-review"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "company_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "opening_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "through_at": {
+      "type": "string",
+      "minLength": 20
+    },
+    "account": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "account_id",
+            "company_id",
+            "opening_quantity",
+            "unit",
+            "event_payload"
+          ],
+          "properties": {
+            "account_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "company_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "opening_quantity": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+            },
+            "unit": {
+              "const": "BAG_40KG"
+            },
+            "event_payload": {
+              "$ref": "urn:tamago:feed-ledger-activation:v1"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "book_through_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 20
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "anchor": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "count_id",
+            "binding_id",
+            "binding_revision",
+            "product_id",
+            "location_id",
+            "cutoff_at",
+            "opening_bags"
+          ],
+          "properties": {
+            "count_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "binding_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "binding_revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "product_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "location_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "cutoff_at": {
+              "type": "string",
+              "minLength": 20
+            },
+            "opening_bags": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "book_balance_bags": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proposed_balance_bags": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "available_bags": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "needs_activation",
+        "current",
+        "pending",
+        "blocked",
+        "insufficient",
+        "already_active",
+        "opening_changed",
+        "future_window",
+        "earlier_window",
+        "other_account_pending"
+      ]
+    },
+    "can_activate": {
+      "type": "boolean"
+    },
+    "can_post": {
+      "type": "boolean"
+    },
+    "can_manage": {
+      "type": "boolean"
+    },
+    "coverage": {
+      "const": "server_records_only"
+    },
+    "inventory_check": {
+      "enum": ["not_activated", "book_recorded"]
+    },
+    "preview": {
+      "$ref": "urn:tamago:feed-balance-preview:v1"
+    },
+    "source_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pending_sources": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "other_applied_sources": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "review_token": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_kind",
+          "source_id",
+          "quantity_bags",
+          "occurred_at",
+          "desired_bags",
+          "applied_bags",
+          "delta_bags",
+          "pending",
+          "other_applied",
+          "context_hash"
+        ],
+        "properties": {
+          "source_kind": {
+            "enum": ["delivery", "supply"]
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "quantity_bags": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "occurred_at": {
+            "type": "string",
+            "minLength": 20
+          },
+          "desired_bags": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "applied_bags": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "delta_bags": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]*[1-9])?$"
+          },
+          "pending": {
+            "type": "boolean"
+          },
+          "other_applied": {
+            "type": "boolean"
+          },
+          "context_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 25
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

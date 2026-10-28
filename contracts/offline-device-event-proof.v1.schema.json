@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tamago.invalid/contracts/offline-device-event-proof.v1.schema.json",
+  "title": "Experimental offline device event proof v1",
+  "description": "A device-key signature over one immutable collection event and its grant reference. This proves possession of a key only; it is not device attestation, current authorization, server receipt, or event acceptance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "schema_version", "jws"],
+  "properties": {
+    "format": { "const": "tamago.offline-device-event-proof" },
+    "schema_version": { "const": 1 },
+    "jws": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+    }
+  }
+}

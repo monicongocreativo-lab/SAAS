@@ -36,6 +36,8 @@ const ready = async (page) => {
     .locator("#offlineState")
     .filter({ hasText: "Pantalla preparada" })
     .waitFor();
+  if (!(await page.locator("#legacyExperiment").evaluate((el) => el.open)))
+    await page.locator("#legacyExperiment > summary").click();
   await page.locator("#save").waitFor({ state: "visible" });
   await page.waitForFunction(() => !document.querySelector("#fields").disabled);
 };

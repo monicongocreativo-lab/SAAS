@@ -9,6 +9,8 @@ La demostración preparada cubre alimento: conteo aprobado, primera apertura exp
 Requiere Node/pnpm de `.node-version`/`package.json` y Docker en ejecución. Primera instalación y descarga de imágenes necesitan internet.
 
 ```sh
+git clone --branch demo/operativo-20261028 --single-branch https://github.com/monicongocreativo-lab/SAAS.git saas-demo
+cd saas-demo
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm demo:start
 ```

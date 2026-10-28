@@ -11,3 +11,5 @@
 - Sin workflows nuevos,cambios de hosting,secrets,merge,release oservicios externos contratados. El nuevo PR depende de#2 yno cambia main/Pages.
 
 La revisión es propia. El tamaño acumulado del checkpoint requiere revisión por módulos antes de integrar. Un PR borrador abierto no equivale a despliegue,función completa,CI remoto aprobado oaprobación de piloto. La aplicación conectada requiere servidor local;el README indica cómo reproducirla.
+
+Publicación verificada:issue#3 yPR#4 abierto en borrador,base dev/dev-002-offline,head demo/operativo-20261028,sin auto-merge. Workflow runs de esta rama:0;checks de PR vacíos(no equivale a CI aprobado). Despliegue más reciente sigue main/github-pages18/10/2026. Main/DEV-002 conservan sus commits anteriores. El checkout original de desarrollo conserva sus archivos técnicos;esta entrega se prepara en copia aislada.
